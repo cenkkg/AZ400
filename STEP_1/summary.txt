@@ -1,0 +1,265 @@
+There are 3 types of users:
+    Canary: users voluntarily test bleeding edge features as soon as they're available.
+    Early adopters: who voluntarily preview releases, considered more refined than the code that exposes canary users.
+    Users: who consume the products after passing through canary and early adopters.
+
+Identify project metrics and key performance indicators (KPIs):
+    It is essential to establish (and agree upon) appropriate metrics and Key Performance Indicators (KPIs) to ensure these goals are measurable.
+    While there is no specific list of metrics and KPIs that apply to all DevOps Projects, the following are commonly used:
+        - Faster outcomes:
+            -- Deployment Frequency. Increasing the frequency of deployments is often a critical driver in DevOps Projects.
+            -- Deployment Speed. It is necessary to reduce the time that they take.
+            -- Deployment Size. How many features, stories, and bug fixes are being deployed each time?
+        - Efficiency:
+            -- Server to Admin Ratio. Are the projects reducing the number of administrators required for a given number of servers?
+            -- Staff Member to Customers Ratio. Is it possible for fewer staff members to serve a given number of customers?
+            -- Application Usage. How busy is the application?
+            -- Application Performance. Is the application performance improving or dropping? (Based upon application metrics)?
+        - Quality and security:
+            -- Deployment failure rates. How often do deployments (or applications) fail?
+            -- Application failure rates. How often do application failures occur, such as configuration failures, performance timeouts, and so on?
+            -- Mean time to recover. How quickly can you recover from a failure?
+        - Culture:
+            -- Employee morale
+            -- Retention rates
+
+GitHub is a Software as a service (SaaS) platform from Microsoft that provides Git-based repositories and DevOps tooling for developing and deploying software.
+
+********************************************************************************************************************************************
+STEP 1.4:
+    1/11 Introduction
+    2/11 Introduction to GitHub Projects and Project boards:
+        - Project Boards
+            With Project boards, you can control specific feature work, roadmaps, release plans, etc.
+            Project boards are made up of issues, pull requests, and notes categorized as cards you can drag and drop into your chosen columns.
+            The cards contain relevant metadata for issues and pull requests, like labels, assignees, the status, and who opened it.
+        
+            There are different types of project boards:
+                -- User-owned project boards: Can contain issues and pull requests from any personal repository.
+                -- Organization-wide project boards: Can contain issues and pull requests from any repository that belongs to an organization.
+                -- Repository project boards: Are scoped to issues and pull requests within a single repository.
+
+            ! To create a project board for your organization, you must be an organization member. !
+
+        - Projects
+            A project is a customizable spreadsheet in which you can configure the layout by filtering, sorting, grouping your issues and PRs, and adding custom fields to track metadata.
+
+    3/11 Introduction to Azure Boards:
+        Azure Boards is a customizable tool to manage software projects supporting Agile, Scrum, and Kanban processes by default.
+
+        - Delivery plans: 
+            It's possible to create another view with deliverables and track dependencies across several teams in a calendar view using Delivery Plans.
+
+    4/11 Link GitHub to Azure Boards:
+        Use GitHub, track work in Azure Boards:
+            Use Azure Boards to plan and track your work and GitHub as source control for software development.
+            Connect Azure Boards with GitHub repositories, enabling linking GitHub commits, pull requests, and issues to work items in Boards.
+        
+            Azure Boards App:
+                The integration is created using the Azure Boards App, acting as a bridge between Azure Boards and GitHub.
+                To install the app, you must be an administrator or owner of the GitHub repository or the GitHub organization.
+
+            Authenticating to GitHub:
+                Azure Boards can connect to GitHub.
+                For GitHub in the cloud, when adding a GitHub connection, the authentication options are:
+                    Username/Password
+                    Personal Access Token (PAT)
+
+    5/11 Configure GitHub Projects:
+        Create a project
+            To start working with GitHub Projects, you first need to create an organization or user project.
+        
+        Adding issues
+            When your new project initializes, it prompts you to add items.
+            Click on the plus (+) sign to add more issues.
+
+        Project settings and permissions
+            You can view and make quick changes to your project description and README by navigating to your project and clicking on the top right.
+
+    6/11 Manage work with GitHub Project boards:
+        GitHub Projects allow you to control project deliverables, release dates, and iterations to plan upcoming work.
+        You can create an iteration to:
+            - Associate items with specific repeating blocks of time.
+            - Set to any length of time.
+            - Include breaks.
+        
+        Iteration field
+
+        Adding new iterations
+
+    7/11 Customize Project views:
+        Using Projects views, you can organize information by changing the layout, grouping, sorting, and filtering your work.
+
+        Project command palette
+            Use the project command palette to change settings and run commands in your project.
+
+        Creating a project view
+
+    8/11 Collaborate using team discussions:
+        GitHub discussions can help make your team plan together, update one another, or talk about any topic you'd like in discussion posts on your team's page in an organization.
+
+    9/11 Agile Plan and Portfolio Management with Azure Boards:
+        ! LAB !
+
+    10/11 TEST:
+
+    11/11 SUMMARY:
+
+********************************************************************************************************************************************
+STEP 1.5:
+    1/7 INTRODUCTION:
+    1/7 Explore DevOps foundational practices:
+        It is helpful for non-developers in an organization to understand the fundamentals of the discipline.
+    3/7 What is source control?:
+        A Source control system (or version control system) allows developers to collaborate on code and track changes.
+        Version control tools will enable you to see who made changes, when, and what exactly was changed.
+        Version control also makes experimenting easy and, most importantly, makes collaboration possible. Without version control, collaborating over source code would be a painful operation.
+    4/7 Explore benefits of source control:
+        ! "Code does not exist unless it is committed into source control. Source control is the fundamental enabler of continuous delivery." !
+        Whether writing code professionally or personally, you should always version your code using a source control management system.
+        Advantages: 
+            - Create workflows.
+            - Work with versions.
+            - Collaboration.
+            - Maintains history of changes.
+            - Automate tasks.
+        Common software development values:
+            - Reusability
+            - Traceability
+            - Manageability
+            - Efficiency
+            - Collaboration
+            - Learning
+    5/7 Explore best practices for source control:
+        - Make small changes. In other words, commit early and commit often.
+        - Do not commit personal files.
+        - Update often and right before pushing to avoid merge conflicts.
+        - Verify your code change before pushing it to a repository; ensure it compiles and tests are passing.
+        - No matter your background or preferences, be a team player and follow agreed conventions and workflows. 
+    6/7 TEST:
+    7/7 SUMMARY:
+********************************************************************************************************************************************
+STEP 1.6:
+    1/9 INTRODUCTION:
+        This module describes different source control systems, such as Git and Team Foundation Version Control (TFVC), and helps with the initial steps for Git utilization.
+    2/9 Understand centralized source control:
+        Centralized source control systems are based on the idea that there's a single "central" copy of your project somewhere (probably on a server).
+        Programmers will check in (or commit) their changes to this central copy.
+        ! Most modern version control systems deal with "changesets," which are a group of changes (possibly too many files) that should be treated as a cohesive whole. !
+        E.g.: Team Foundation Version Control (TFVC), CVS, Subversion (or SVN), and Perforce.
+
+    3/9 Understand distributed source control:
+        Over time, so-called "distributed" source control or version control systems (DVCS for short) have become the most important.
+        The three most popular are Git, Mercurial, and Bazaar.
+        ! Instead, every developer "clones" a repository copy and has the project's complete history on their local storage. !
+       
+        Disadvantages compared to centralized source control:
+            There are almost no disadvantages to using a distributed source control system over a centralized one.
+            Distributed systems don't prevent you from having a single "central" repository; they provide more options.
+                - If your project contains many large, binary files that can't be efficiently compressed, the space needed to store all versions of these files can accumulate quickly.
+                - If your project has a long history (50,000 changesets or more), downloading the entire history can take an impractical amount of time and disk space.
+    4/9 Explore Git and Team Foundation Version Control:
+        Git (distributed):
+            Git is a distributed version control system.
+            Each developer has a copy of the source repository on their development system.
+        Team Foundation Version Control (TFVC-centralized):
+            Team Foundation Version Control (TFVC) is a centralized version control system.
+            Typically, team members have only one version of each file on their dev machines.
+            Historical data is maintained only on the server.
+            Branches are path-based and created on the server.
+    5/9 Examine and choose Git:
+        Switching from a centralized version control system to Git changes the way your development team creates software.
+        Developers would gain the following benefits by moving to Git:
+            - Community
+                If your team is using Git, odds are you will not have to train new hires on your workflow because they will already be familiar with distributed development.
+                Also, Git is popular among open-source projects. It is easy to use 3rd-party libraries and encourage others to fork your open-source code.
+            - Distributed development
+                In TFVC, each developer gets a working copy that points back to a single central repository.
+                Git, however, is a distributed version control system.
+                Instead of a working copy, each developer gets their local repository, complete with an entire history of commits.
+            
+            ! Having a complete local history makes Git fast since it means you do not need a network connection to create commits, inspect previous versions of a file, or do diffs between commits. !
+            Distributed development also makes it easier to scale your engineering team.
+            If someone breaks the production branch in SVN, other developers cannot check in their changes until it is fixed.
+            With Git, this kind of blocking does not exist. 
+            Everybody can continue going about their business in their local repositories.
+
+            And, like feature branches, distributed development creates a more reliable environment.
+            Even if developers obliterate their repository, they can clone from someone else and start afresh.
+        
+        Trunk-based development:
+            One of the most significant advantages of Git is its branching capabilities.
+            Unlike centralized version control systems, Git branches are cheap and easy to merge.
+
+        Pull requests:
+            Many source code management tools such as Azure Repos enhance core Git functionality with pull requests.
+            A pull request is a way to ask another developer to merge one of your branches into their repository.
+
+        Faster release cycle: 
+            Git hooks allow you to run scripts when certain events occur inside a repository, which lets you automate deployment to your heart’s content.
+
+    6/9 Understand objections to using Git:
+        Overwriting history:
+            Git technically does allow you to overwrite history - but like any helpful feature, if misused can cause conflicts.
+            While you cannot overwrite history with Team Foundation Version Control (TFVC), you can still overwrite code and do other painful things.
+        Large files:
+            Git works best with repos that are small and do not contain large files (or binaries).
+            Every time you (or your build machines) clone the repo, they get the entire repo with its history from the first commit.
+            It is great for most situations but can be frustrating if you have large files.
+            Binary files are even worse because Git cannot optimize how they are stored.
+            So, Git LFS was created.
+
+            ! Also, if you are used to storing compiled binaries in your source repos, stop !
+            ! Use Azure Artifacts or some other package management tool to store binaries for which you have source code. !
+        Learning curve:
+            There is a learning curve. If you have never used source control before, you are probably better off when learning Git.
+
+    7/9 Describe working with Git locally:
+        LAB
+    8/9 TEST:
+    9/9 SUMMARY:
+
+********************************************************************************************************************************************
+STEP 1.7:
+    1/8 INTRODUCTION:
+    2/8 Introduction to Azure Repos:
+        Azure Repos is a set of version control tools that you can use to manage your code.
+        Azure Repos provides two types of version control:
+            - Git: distributed version control
+            - Team Foundation Version Control (TFVC): centralized version control
+    3/8 Introduction to GitHub:
+        GitHub is the largest open-source community in the world. Microsoft owns GitHub. GitHub is a development platform inspired by the way you work.
+        While Git is a command-line tool, GitHub provides a Web-based graphical interface.
+    4/8 Migrate from TFVC to Git:
+        Migrating the tip:
+            Most teams wish they could reorganize their source control structure.
+            Typically, the structure the team is using today was set up by a well-meaning developer a decade ago, but it is not optimal.
+            Migrating to Git could be an excellent opportunity to restructure your repo.
+
+            The process is simple:
+                - Create an empty Git repo (or multiple empty repos).
+                - Get-latest from TFS.
+                - Copy/reorganize the code into the empty Git repos.
+                - Commit and push, and you are there!
+        
+        Single branch import:
+            If you are on TFVC and in Azure DevOps, you have the option of a simple single-branch import.
+            Click on the Import repository from the Azure Repos top-level drop-down menu to open the dialog.
+
+        Import repository:
+            Import repository also allows you to import a git repository.
+            It is beneficial to move your git repositories from GitHub or any other public or private hosting spaces into Azure Repos.
+    
+    5/8 Use GIT-TFS:
+        What if you need to migrate more than a single branch and keep branch relationships? Or are you going to drag all the history with you?
+            In that case, you're going to have to use GIT-TFS. It's an open-source project built to synchronize Git and TFVC repositories.
+
+    6/8 Develop online with GitHub Codespaces:
+        GitHub Codespaces addresses several issues from which developers regularly suffer.
+        What is GitHub Codespaces?
+            Codespaces is a cloud-based development environment that GitHub hosts. 
+            It is essentially an online implementation of Visual Studio Code.
+            Codespaces allows developers to work entirely in the cloud.
+    7/8 TEST:
+    8/8 SUMMARY:
+
