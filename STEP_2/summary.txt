@@ -166,3 +166,45 @@ STEP 2.4:
     9/9 SUMMARY:
 ********************************************************************************************************************************************
 STEP 2.5:  
+    1/5 INTRODUCTION:
+        This module describes Git hooks and their usage during the development process, implementation, and behavior.
+    2/5 Introduction to Git hooks:
+        Continuous delivery demands a significant level of automation.
+        You can't be continuously delivering if you don't have a quality codebase.
+        Git hooks:
+            Git hooks are a mechanism that allows code to be run before or after certain Git lifecycle events.
+            For example, one could hook into the commit-msg event to validate that the commit message structure follows the recommended format.
+            ! The only criteria are that hooks must be stored in the .git/hooks folder in the repo root. !
+        Practical use cases for using Git hooks:
+            Since Git hooks execute the scripts on the specific event type they're called on, you can do much anything with Git hooks.
+            Some examples of where you can use hooks to enforce policies, ensure consistency, and control your environment:
+                - In Enforcing preconditions for merging
+                - Verifying work Item ID association in your commit message
+                - Preventing you & your team from committing faulty code
+                - Sending notifications to your team's chat room (Teams, Slack, HipChat, etc.)
+    3/5 Implement Git hooks:
+        How to do it:
+            How could Git hooks stop you from accidentally leaking Amazon AWS access keys to GitHub?
+            You can invoke a script at pre-commit.
+            Using Git hooks to scan the increment of code being committed into your local repository for specific keywords:
+            "
+                #!C:/Program\ Files/Git/usr/bin/sh.exe
+                matches=$(git diff-index --patch HEAD | grep '^+' | grep -Pi 'password|keyword2|keyword3')
+                if [ ! -z "$matches" ]
+                then
+                    cat <<\EOT
+                Error: Words from the blocked list were present in the diff:
+                EOT
+                    echo $matches
+                    exit 1
+                fi
+            "
+        There's more:
+            The repo .git\hooks folder isn't committed into source control. You may wonder how you share the goodness of the automated scripts you create with the team.
+            The good news is that, from Git version 2.9, you can now map Git hooks to a folder that can be committed into source control.
+            "Git config --global core.hooksPath '~/.githooks'"
+    4/5 TEST:
+    5/5 SUMMARY:
+********************************************************************************************************************************************
+STEP 2.6: 
+    
