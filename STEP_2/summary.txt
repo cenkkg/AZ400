@@ -207,4 +207,88 @@ STEP 2.5:
     5/5 SUMMARY:
 ********************************************************************************************************************************************
 STEP 2.6: 
+    1/6 INTRODUCTION:
+        This module explains how to use Git to foster inner source and implement Fork and its workflows.
+    2/6 Explore foster inner source:
+        The fork-based pull request workflow is popular with open-source projects because it allows anybody to contribute to a project.
+        Inner source:
+            Inner source – sometimes called "internal open source" – brings all the benefits of open-source software development inside your firewall.
+    3/6 Implement the fork workflow:
+        A fork is a copy of a repository. Forking a repository allows you to experiment with changes without affecting the original project freely.
+        A fork is a complete copy of a repository, including all files, commits, and (optionally) branches.
+        What's in a fork?
+            A fork starts with all the contents of its upstream (original) repository.
+            You can include all branches or limit them to only the default branch when you create a fork.
+            None of the permissions, policies, or build pipelines are applied.
+        Sharing code between forks:
+            You can create PRs in either direction: from fork to upstream or upstream to fork.
+            The destination repository's permissions, policies, builds, and work items will apply to the PR.
+        Choosing between branches and forks:
+            For a small team (2-5 developers), we recommend working in a single repo.
+            As your team grows more significant, you may find yourself outgrowing this arrangement and prefer to switch to a forking workflow.
+        ! The forking workflow: !
+            1- Create the Fork
+            2- Clone your fork locally ("git remote add upstream {upstream_url}")
+            3- Make and push changes
+                Make and commit your changes as you normally would. When you're done with the changes, push them to origin (your fork).
+            4- Create and complete a PR
+                All the policies required reviewers and builds will be applied in the upstream repo.
+                Once all policies are satisfied, the PR can be completed, and the changes become a permanent part of the upstream repo.
+            5- Sync your fork to the latest
+                When you've gotten your PR accepted into upstream, you'll want to make sure your fork reflects the latest state of the repo.
+                We recommend rebasing on upstream's main branch (assuming main is the main development branch).
+                "
+                    git fetch upstream main
+                    git rebase upstream/main
+                    git push origin
+                "
+    4/6 Describe inner source with forks:
+        People fork repositories when they want to change the code in a repository they don't have to write access to.
+    5/6 TEST:
+    6/6 SUMMARY:
+********************************************************************************************************************************************
+STEP 2.7: 
+    1/7 INTRODUCTION:
+        This module explores how to work with large repositories and purge repository data.
+    2/7 Work with large repositories:
+        Git is a great version control system widely adopted and recommended, but a few concerns should be made and taken care of when working with large repositories.
+        Why repositories become large:
+            - Long history
+            - Large binary files
+        Shallow clone:
+            If developers don't need all the available history in their local repositories, a good option is to implement a shallow clone.
+            It saves both space on local development systems and the time it takes to sync.
+            You can specify the depth of the clone that you want to execute:
+                "   
+                    git clone --depth [depth] [clone-url]
+                "
+            You can also reduce clones by filtering branches or cloning only a single branch.
+        VFS for Git:
+            VFS for Git helps with large repositories. It requires a Git LFS client.
+            Typical Git commands are unaffected, but the Git LFS works with the standard filesystem to download necessary files in the background when you need files from the server.
+        Scalar:
+            Scalar is a .NET Core application available for Windows and macOS. With tools and extensions for Git to allow very large repositories to maximize your Git command performance.
+            Microsoft uses it for Windows and Office repositories.
+    3/7 Purge repository data:
+        While one of the benefits of Git is its ability to hold long histories for repositories efficiently, there are times when you need to purge data.
+        git filter-repo tool:
+            The git filter-repo is a tool for rewriting history.
+        BFG Repo-Cleaner:
+            BFG Repo-Cleaner is a commonly used open-source tool for deleting or "fixing" content in repositories.
+            E.g.:
+                "bfg --delete-files file_I_should_not_have_committed"
+    4/7 Manage releases with GitHub Repos:
+        Part of the release process starts with your version control.
+        Creating a release:
+            To create a release, use the gh release create command.
+            Replace the tag with the desired tag name for the release and follow the interactive prompts.
+        Editing a release:
+            You can't edit Releases with GitHub CLI.
+        Deleting a release:
+            To delete a release, use the following command, replace the tag with the release tag to delete, and use the -y flag to skip confirmation.
+            "gh release delete tag -y"
+    5/7 Automate release notes with GitHub:
+        You can generate an overview of the contents of a release, and you can also customize your automated release notes.
+    6/7 TEST:
+    7/7 SUMMARY:
     
