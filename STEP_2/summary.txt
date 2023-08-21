@@ -1,0 +1,294 @@
+********************************************************************************************************************************************
+STEP 2.1:
+    1/5 Introduction:
+        As a version control system, Git is easy to get started with but challenging to master.
+    2/5 Explore monorepo versus multiple repos:
+        A repository is simply a place where the history of your work is stored.
+        It often lives in a .git subdirectory of your working copy.
+        There are two philosophies on organizing your repos: Monorepo or multiple repos.
+            - Monorepos is a source control pattern where all the source code is kept in a single repository.
+            - Multiple repositories refer to organizing your projects into their separate repository.
+    3/5 Implement a change log:
+        The concept of a changelog is simple enough: It's a file that has a list of changes made to a project, usually in date order. 
+        - Added features
+        - Modified/Improved features
+        - Deleted features
+        ! Some teams will post changelogs as blog posts; others will create a CHANGELOG.md file in a GitHub repository. !
+    4/5 TEST:
+    5/5 SUMMARY:
+********************************************************************************************************************************************
+STEP 2.2:
+    1/9 INTRODUCTION:
+        This module explores Git branching types, concepts, and models for the continuous delivery process.
+    2/9 Explore branch workflow types:
+        What is a successful Git branch workflow?:
+            When evaluating a workflow for your team, you must consider your team's culture.
+            You want the workflow to enhance your team's effectiveness and not be a burden that limits productivity.
+        Common branch workflows:
+            Most popular Git workflows will have some sort of centralized repo that individual developers will push and pull from.
+            - Trunk-based development:  
+                Trunk-based development is a logical extension of Centralized Workflow.
+                The core idea behind the Feature Branch Workflow is that all feature development should take place in a dedicated branch instead of the main branch.
+            - Forking workflow:
+                The Forking Workflow is fundamentally different than the other workflows discussed in this tutorial.
+                Instead of using a single server-side repository to act as the "central" codebase, it gives every developer a server-side repository.
+                It means that each contributor has two Git repositories:
+                    -- A private local one.
+                    -- A public server-side one.
+    3/9 Explore feature branch workflow:    
+        Explore feature branch workflow:
+            The core idea behind the Feature Branch Workflow is that all feature development should take place in a dedicated branch instead of the main branch.
+        Trunk-based development workflow:
+            The trunk-based development Workflow assumes a central repository, and the main represents the official project history.
+        Create a branch
+        Add commits
+        Open a pull request
+        Discuss and review your code
+        Deploy
+        Merge
+    4/9 Explore Git branch model for continuous delivery:
+        The purpose of writing code is to ship enhancements to your software.
+        How to do it:
+            1- After you've cloned the main branch into a local repository, create a new feature branch, myFeature-1:
+            2- Run the Git branch command to see all the branches.
+            3- Make a change to the Program.cs file in the feature/myFeature-1 branch:
+            4- Stage your changes and commit locally, then publish your branch to remote:
+            5- Configure Azure DevOps CLI for your organization and project. Replace organization and project name:
+                "az devops configure --defaults organization=https://dev.azure.com/organization project="project name""
+            6- Create a new pull request (using the Azure DevOps CLI) to review the changes in the feature-1 branch:
+                "az repos pr create --title "Review Feature-1 before merging to main" --work-items 38 39 `
+                    --description "#Merge feature-1 to main" `
+                    --source-branch feature/myFeature-1 --target-branch main `
+                    --repository myWebApp --open"
+            7- Start work on Feature 2. Create a branch on remote from the main branch and do the checkout locally:
+                "git push origin main:refs/heads/feature/myFeature-2"
+                "git checkout feature/myFeature-2"
+            8- Modify Program.cs by changing the same comment line in the code changed in feature-1.
+            9- Commit the changes locally, push them to the remote repository, and then raise a pull request to merge the changes from feature/myFeature-2 to the main branch:
+                "az repos pr create --title "Review Feature-2 before merging to main" --work-items 40 42 `
+                    --description "#Merge feature-2 to main" `
+                    --source-branch feature/myFeature-2 --target-branch main `
+                    --repository myWebApp --open"
+
+            ! "A critical bug is reported in production against the feature-1 release with the pull request in flight. 
+            To investigate the issue, you need to debug against the version of the code currently deployed in production. 
+            To investigate the issue, create a new fof branch using the release_feature1 tag:" !
+
+            "git checkout -b fof/bug-1 release_feature1"
+            
+            10- Modify Program.cs by changing the same line of code that was changed in the feature-1 release:
+            11- Stage and commit the changes locally, then push changes to the remote repository:
+            12- Immediately after the changes have been rolled out to production, tag the fof\bug-1 branch with the release_bug-1 tag, then raise a pull request to merge the changes from fof/bug-1 back into the main:
+                "az repos pr create --title "Review Bug-1 before merging to main" --work-items 100 `
+                    --description "#Merge Bug-1 to main" `
+                    --source-branch fof/Bug-1 --target-branch main `
+                    --repository myWebApp --open"
+            13- The Git Pull Request Merge Conflict resolution extension makes it possible to resolve merge conflicts right in the browser. Navigate to the conflicts tab and click on Program.cs to resolve the merge conflicts:
+
+            ! We have a conflict in feature_2 and main now, we need to solve it. !
+    5/9 Explore GitHub flow:
+        The first step is to create a branch in your repository to work without affecting the default branch, and you give collaborators a chance to review your work.
+    6/9 Explore fork workflow:
+        Forked vs Cloned
+    7/9 Version Control with Git in Azure Repos (LAB):
+        Azure DevOps supports two types of version control, Git and Team Foundation Version Control (TFVC).
+    8/9 TEST:
+    9/9 SUMMARY:
+********************************************************************************************************************************************
+STEP 2.3:   
+    1/6 INTRODUCTION:
+        This module presents pull requests for collaboration and code reviews using Azure DevOps and GitHub mobile for pull request approvals.
+    2/6 Collaborate with pull requests:
+        Pull requests let you tell others about changes you've pushed to a GitHub repository.
+        Get your code reviewed:
+            The code review done in a pull request isn't just to find bugs—that's what your tests are concerning.
+        Give great feedback:
+        Protect branches with policies:
+            Require pull requests to make any changes on these branches. Developers pushing changes directly to the protected branches will have their pushes rejected.
+            Add more conditions to your pull requests to enforce a higher level of code quality in your key branches.
+            A clean build of the merged code and approval from multiple reviewers are extra requirements you can set to protect your key branches.
+    3/6 Exercise - Azure Repos collaborating with pull requests:
+        Code issues that are found sooner are both easier and cheaper to fix.
+        Getting ready:
+            The out-of-the-box branch policies include several policies, such as build validation and enforcing a merge strategy. 
+    4/6 Examine GitHub mobile for pull request approvals:
+    5/6 TEST:
+    6/6 SUMMARY:
+********************************************************************************************************************************************
+STEP 2.4:   
+    1/9 INTRODUCTION:
+        This module examines technical debt, complexity, quality metrics, and plans for effective code reviews and code quality validation.
+    2/9 Examine code quality:
+        There are five key traits to measure for higher quality:
+            - Reliability
+                Reliability measures the probability that a system will run without failure over a specific period of operation.
+                Software availability can be measured using the mean time between failures (MTBF).
+            - Maintainability
+                Maintainability measures how easily software can be maintained.
+                It relates to the codebase's size, consistency, structure, and complexity.
+            - Testability
+                Testability measures how well the software supports testing efforts.
+            - Portability
+                Portability measures how usable the same software is in different environments.
+                It relates to platform independence.
+            - Reusability
+                Reusability measures whether existing assets—such as code—can be used again.
+                Assets are more easily reused if they have modularity or loose coupling characteristics.
+    3/9 Examine complexity and quality metrics:
+        While there are various quality metrics, a few of the most important ones are listed here.
+        Complexity metrics can help in measuring quality.
+            - Program vocabulary.
+            - Calculated program length.
+            - Difficulty.
+            - Effort.
+            - ...
+        ! Code analysis tools can be used to check for security, performance, interoperability, language usage, and globalization and should be part of every developer's toolbox and software build process. !
+    4/9 Introduction to technical debt:
+        Technical debt is a term that describes the future cost that will be incurred by choosing an easy solution today instead of using better practices because they would take longer to complete.
+        SonarQube
+    5/9 Measure and manage technical debt:
+        Integrating the assessment and measurement of technical debt and code quality overall is essential as part of your Continuous Integration and Deployment pipelines in Azure DevOps.
+    6/9 Integrate other code quality tools:
+        Many tools can be used to assess aspects of your code quality and technical debt.
+        - NDepend:
+            NDepend is a Visual Studio extension that assesses the amount of technical debt a developer has added during a recent development period, typically in the last hour.
+            With this information, the developer might make the required corrections before ever committing the code.
+        - Resharper Code Quality Analysis:
+            Resharper can make a code quality analysis from the command line.
+            Also, be set to fail builds when code quality issues are found automatically.
+            Rules can be configured for enforcement across teams.
+        Search in Azure DevOps:
+            To find other code quality tools that are easy to integrate with Azure DevOps, search for the word Quality when adding a task into your build pipeline.
+    7/9 Plan effective code reviews:
+        ! Most developers would agree that code reviews can improve the quality of the applications they produce, but only if the process for the code reviews is effective. !
+        It is essential, upfront, to agree that everyone is trying to achieve better code quality.
+    8/9 TEST:
+    9/9 SUMMARY:
+********************************************************************************************************************************************
+STEP 2.5:  
+    1/5 INTRODUCTION:
+        This module describes Git hooks and their usage during the development process, implementation, and behavior.
+    2/5 Introduction to Git hooks:
+        Continuous delivery demands a significant level of automation.
+        You can't be continuously delivering if you don't have a quality codebase.
+        Git hooks:
+            Git hooks are a mechanism that allows code to be run before or after certain Git lifecycle events.
+            For example, one could hook into the commit-msg event to validate that the commit message structure follows the recommended format.
+            ! The only criteria are that hooks must be stored in the .git/hooks folder in the repo root. !
+        Practical use cases for using Git hooks:
+            Since Git hooks execute the scripts on the specific event type they're called on, you can do much anything with Git hooks.
+            Some examples of where you can use hooks to enforce policies, ensure consistency, and control your environment:
+                - In Enforcing preconditions for merging
+                - Verifying work Item ID association in your commit message
+                - Preventing you & your team from committing faulty code
+                - Sending notifications to your team's chat room (Teams, Slack, HipChat, etc.)
+    3/5 Implement Git hooks:
+        How to do it:
+            How could Git hooks stop you from accidentally leaking Amazon AWS access keys to GitHub?
+            You can invoke a script at pre-commit.
+            Using Git hooks to scan the increment of code being committed into your local repository for specific keywords:
+            "
+                #!C:/Program\ Files/Git/usr/bin/sh.exe
+                matches=$(git diff-index --patch HEAD | grep '^+' | grep -Pi 'password|keyword2|keyword3')
+                if [ ! -z "$matches" ]
+                then
+                    cat <<\EOT
+                Error: Words from the blocked list were present in the diff:
+                EOT
+                    echo $matches
+                    exit 1
+                fi
+            "
+        There's more:
+            The repo .git\hooks folder isn't committed into source control. You may wonder how you share the goodness of the automated scripts you create with the team.
+            The good news is that, from Git version 2.9, you can now map Git hooks to a folder that can be committed into source control.
+            "Git config --global core.hooksPath '~/.githooks'"
+    4/5 TEST:
+    5/5 SUMMARY:
+********************************************************************************************************************************************
+STEP 2.6: 
+    1/6 INTRODUCTION:
+        This module explains how to use Git to foster inner source and implement Fork and its workflows.
+    2/6 Explore foster inner source:
+        The fork-based pull request workflow is popular with open-source projects because it allows anybody to contribute to a project.
+        Inner source:
+            Inner source – sometimes called "internal open source" – brings all the benefits of open-source software development inside your firewall.
+    3/6 Implement the fork workflow:
+        A fork is a copy of a repository. Forking a repository allows you to experiment with changes without affecting the original project freely.
+        A fork is a complete copy of a repository, including all files, commits, and (optionally) branches.
+        What's in a fork?
+            A fork starts with all the contents of its upstream (original) repository.
+            You can include all branches or limit them to only the default branch when you create a fork.
+            None of the permissions, policies, or build pipelines are applied.
+        Sharing code between forks:
+            You can create PRs in either direction: from fork to upstream or upstream to fork.
+            The destination repository's permissions, policies, builds, and work items will apply to the PR.
+        Choosing between branches and forks:
+            For a small team (2-5 developers), we recommend working in a single repo.
+            As your team grows more significant, you may find yourself outgrowing this arrangement and prefer to switch to a forking workflow.
+        ! The forking workflow: !
+            1- Create the Fork
+            2- Clone your fork locally ("git remote add upstream {upstream_url}")
+            3- Make and push changes
+                Make and commit your changes as you normally would. When you're done with the changes, push them to origin (your fork).
+            4- Create and complete a PR
+                All the policies required reviewers and builds will be applied in the upstream repo.
+                Once all policies are satisfied, the PR can be completed, and the changes become a permanent part of the upstream repo.
+            5- Sync your fork to the latest
+                When you've gotten your PR accepted into upstream, you'll want to make sure your fork reflects the latest state of the repo.
+                We recommend rebasing on upstream's main branch (assuming main is the main development branch).
+                "
+                    git fetch upstream main
+                    git rebase upstream/main
+                    git push origin
+                "
+    4/6 Describe inner source with forks:
+        People fork repositories when they want to change the code in a repository they don't have to write access to.
+    5/6 TEST:
+    6/6 SUMMARY:
+********************************************************************************************************************************************
+STEP 2.7: 
+    1/7 INTRODUCTION:
+        This module explores how to work with large repositories and purge repository data.
+    2/7 Work with large repositories:
+        Git is a great version control system widely adopted and recommended, but a few concerns should be made and taken care of when working with large repositories.
+        Why repositories become large:
+            - Long history
+            - Large binary files
+        Shallow clone:
+            If developers don't need all the available history in their local repositories, a good option is to implement a shallow clone.
+            It saves both space on local development systems and the time it takes to sync.
+            You can specify the depth of the clone that you want to execute:
+                "   
+                    git clone --depth [depth] [clone-url]
+                "
+            You can also reduce clones by filtering branches or cloning only a single branch.
+        VFS for Git:
+            VFS for Git helps with large repositories. It requires a Git LFS client.
+            Typical Git commands are unaffected, but the Git LFS works with the standard filesystem to download necessary files in the background when you need files from the server.
+        Scalar:
+            Scalar is a .NET Core application available for Windows and macOS. With tools and extensions for Git to allow very large repositories to maximize your Git command performance.
+            Microsoft uses it for Windows and Office repositories.
+    3/7 Purge repository data:
+        While one of the benefits of Git is its ability to hold long histories for repositories efficiently, there are times when you need to purge data.
+        git filter-repo tool:
+            The git filter-repo is a tool for rewriting history.
+        BFG Repo-Cleaner:
+            BFG Repo-Cleaner is a commonly used open-source tool for deleting or "fixing" content in repositories.
+            E.g.:
+                "bfg --delete-files file_I_should_not_have_committed"
+    4/7 Manage releases with GitHub Repos:
+        Part of the release process starts with your version control.
+        Creating a release:
+            To create a release, use the gh release create command.
+            Replace the tag with the desired tag name for the release and follow the interactive prompts.
+        Editing a release:
+            You can't edit Releases with GitHub CLI.
+        Deleting a release:
+            To delete a release, use the following command, replace the tag with the release tag to delete, and use the -y flag to skip confirmation.
+            "gh release delete tag -y"
+    5/7 Automate release notes with GitHub:
+        You can generate an overview of the contents of a release, and you can also customize your automated release notes.
+    6/7 TEST:
+    7/7 SUMMARY:
+    
