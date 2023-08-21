@@ -1,0 +1,94 @@
+********************************************************************************************************************************************
+STEP 2.1:
+    1/5 Introduction:
+        As a version control system, Git is easy to get started with but challenging to master.
+    2/5 Explore monorepo versus multiple repos:
+        A repository is simply a place where the history of your work is stored.
+        It often lives in a .git subdirectory of your working copy.
+        There are two philosophies on organizing your repos: Monorepo or multiple repos.
+            - Monorepos is a source control pattern where all the source code is kept in a single repository.
+            - Multiple repositories refer to organizing your projects into their separate repository.
+    3/5 Implement a change log:
+        The concept of a changelog is simple enough: It's a file that has a list of changes made to a project, usually in date order. 
+        - Added features
+        - Modified/Improved features
+        - Deleted features
+        ! Some teams will post changelogs as blog posts; others will create a CHANGELOG.md file in a GitHub repository. !
+    4/5 TEST:
+    5/5 SUMMARY:
+********************************************************************************************************************************************
+STEP 2.2:
+    1/9 INTRODUCTION:
+        This module explores Git branching types, concepts, and models for the continuous delivery process.
+    2/9 Explore branch workflow types:
+        What is a successful Git branch workflow?:
+            When evaluating a workflow for your team, you must consider your team's culture.
+            You want the workflow to enhance your team's effectiveness and not be a burden that limits productivity.
+        Common branch workflows:
+            Most popular Git workflows will have some sort of centralized repo that individual developers will push and pull from.
+            - Trunk-based development:  
+                Trunk-based development is a logical extension of Centralized Workflow.
+                The core idea behind the Feature Branch Workflow is that all feature development should take place in a dedicated branch instead of the main branch.
+            - Forking workflow:
+                The Forking Workflow is fundamentally different than the other workflows discussed in this tutorial.
+                Instead of using a single server-side repository to act as the "central" codebase, it gives every developer a server-side repository.
+                It means that each contributor has two Git repositories:
+                    -- A private local one.
+                    -- A public server-side one.
+    3/9 Explore feature branch workflow:    
+        Explore feature branch workflow:
+            The core idea behind the Feature Branch Workflow is that all feature development should take place in a dedicated branch instead of the main branch.
+        Trunk-based development workflow:
+            The trunk-based development Workflow assumes a central repository, and the main represents the official project history.
+        Create a branch
+        Add commits
+        Open a pull request
+        Discuss and review your code
+        Deploy
+        Merge
+    4/9 Explore Git branch model for continuous delivery:
+        The purpose of writing code is to ship enhancements to your software.
+        How to do it:
+            1- After you've cloned the main branch into a local repository, create a new feature branch, myFeature-1:
+            2- Run the Git branch command to see all the branches.
+            3- Make a change to the Program.cs file in the feature/myFeature-1 branch:
+            4- Stage your changes and commit locally, then publish your branch to remote:
+            5- Configure Azure DevOps CLI for your organization and project. Replace organization and project name:
+                "az devops configure --defaults organization=https://dev.azure.com/organization project="project name""
+            6- Create a new pull request (using the Azure DevOps CLI) to review the changes in the feature-1 branch:
+                "az repos pr create --title "Review Feature-1 before merging to main" --work-items 38 39 `
+                    --description "#Merge feature-1 to main" `
+                    --source-branch feature/myFeature-1 --target-branch main `
+                    --repository myWebApp --open"
+            7- Start work on Feature 2. Create a branch on remote from the main branch and do the checkout locally:
+                "git push origin main:refs/heads/feature/myFeature-2"
+                "git checkout feature/myFeature-2"
+            8- Modify Program.cs by changing the same comment line in the code changed in feature-1.
+            9- Commit the changes locally, push them to the remote repository, and then raise a pull request to merge the changes from feature/myFeature-2 to the main branch:
+                "az repos pr create --title "Review Feature-2 before merging to main" --work-items 40 42 `
+                    --description "#Merge feature-2 to main" `
+                    --source-branch feature/myFeature-2 --target-branch main `
+                    --repository myWebApp --open"
+
+            ! "A critical bug is reported in production against the feature-1 release with the pull request in flight. 
+            To investigate the issue, you need to debug against the version of the code currently deployed in production. 
+            To investigate the issue, create a new fof branch using the release_feature1 tag:" !
+
+            "git checkout -b fof/bug-1 release_feature1"
+            
+            10- Modify Program.cs by changing the same line of code that was changed in the feature-1 release:
+            11- Stage and commit the changes locally, then push changes to the remote repository:
+            12- Immediately after the changes have been rolled out to production, tag the fof\bug-1 branch with the release_bug-1 tag, then raise a pull request to merge the changes from fof/bug-1 back into the main:
+                "az repos pr create --title "Review Bug-1 before merging to main" --work-items 100 `
+                    --description "#Merge Bug-1 to main" `
+                    --source-branch fof/Bug-1 --target-branch main `
+                    --repository myWebApp --open"
+            13- The Git Pull Request Merge Conflict resolution extension makes it possible to resolve merge conflicts right in the browser. Navigate to the conflicts tab and click on Program.cs to resolve the merge conflicts:
+
+            ! We have a conflict in feature_2 and main now, we need to solve it. !
+    5/9 Explore GitHub flow:
+        The first step is to create a branch in your repository to work without affecting the default branch, and you give collaborators a chance to review your work.
+    6/9 Explore fork workflow:
+        Forked vs Cloned
+    7/7 Version Control with Git in Azure Repos (LAB):
+        Azure DevOps supports two types of version control, Git and Team Foundation Version Control (TFVC).
