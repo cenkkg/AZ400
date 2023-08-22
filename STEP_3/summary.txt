@@ -148,10 +148,9 @@ STEP 3.2:
         4- Exercise 2: Manage Azure DevOps agent pools:
             In this exercise, you will implement a self-hosted Azure DevOps agent.
             In this task, you will configure your lab Virtual Machine as an Azure DevOps self-hosting agent and use it to run a build pipeline.
-
-            4-1 Task 1: Configure an Azure DevOps self-hosting agent:
-                Creating new access token.
-            4-2 
+        ! LAB !
+    12/13 TEST:
+    13/13 SUMMARY:
 
 
 
