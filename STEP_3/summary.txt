@@ -151,6 +151,48 @@ STEP 3.2:
         ! LAB !
     12/13 TEST:
     13/13 SUMMARY:
-
-
-
+********************************************************************************************************************************************
+STEP 3.3:
+    1/8 INTRODUCTION:
+        This module describes parallel jobs and how to estimate their usage.
+    2/8 Understand parallel jobs:
+        How a parallel job is consumed by a build or release:
+            This job allows users in that organization to collectively run only one build or release job at a time.
+            When more jobs are triggered, they're queued and will wait for the previous job to finish.
+    3/8 Estimate parallel jobs:
+        Determine how many parallel jobs you need:
+            Simple estimate:
+                A simple rule of thumb: Estimate that you'll need one parallel job for every four to five users in your organization.
+            Detailed estimate:
+                In the following scenarios, you might need multiple parallel jobs:
+                    - If you have multiple teams, and if each of them requires a CI build, you'll likely need a parallel job for each team.
+                    - If your CI build trigger applies to multiple branches, you'll likely need a parallel job for each active branch.
+                    - If you develop multiple applications by using one organization or server, you'll likely need more parallel jobs: one to deploy each application simultaneously.
+        Sharing of parallel jobs across projects in a collection:
+            ! Parallel jobs are purchased at the organization level, and they're shared by all projects in an organization. !
+    4/8 Describe Azure Pipelines and open-source projects:
+        With public projects, users can mark an Azure DevOps Team Project as public.
+        Public versus private projects:
+            Projects in Azure DevOps provide a repository for source code and a place for a group of developers and teams to plan, track progress, and collaborate on building software solutions.
+        Supported services:
+            Non-members of a public project will have read-only access to a limited set of services, precisely:
+                - Browse the code base, download code, view commits, branches, and pull requests.
+                - View and filter work items.
+                - View a project page or dashboard
+                - ...
+    5/8 Explore Azure Pipelines and Visual Designer:
+        You can create and configure your build and release pipelines in the Azure DevOps web portal with the visual designer. (Often referred to as "Classic Pipelines").
+        Benefits of using the Visual Designer:
+            The visual designer is great for new users in continuous integration (CI) and continuous delivery (CD).
+    6/8 Describe Azure Pipelines and YAML:
+        Mirroring the rise of interest in infrastructure as code, there has been considerable interest in defining pipelines as code. 
+        You can either use YAML to define your pipelines or use the visual designer to do the same.
+        Benefits of using YAML:
+            - The pipeline is versioned with your code and follows the same branching structure.
+            - Every branch you use can modify the build policy by adjusting the azure-pipelines.yml file.
+            - A change to the build process might cause a break or result in an unexpected outcome.
+    7/8 TEST:
+    8/8 SUMMARY:
+********************************************************************************************************************************************
+STEP 3.4:  
+    
