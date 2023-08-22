@@ -1,0 +1,70 @@
+********************************************************************************************************************************************
+STEP 3.1:
+    1/6 INTRODUCTION:
+        Azure Pipelines is a fully featured service used to create cross-platform CI (Continuous Integration) and CD (Continuous Deployment).
+    2/6 Explore the concept of pipelines in DevOps:
+        Business demands continuous delivery of value.
+        Think of it as a pipeline. The pipeline breaks down the software delivery process into stages.
+        Build automation and continuous integration:
+            The pipeline starts by building the binaries to create the deliverables passed to the following stages.
+        Test automation:
+            The new version of an application is rigorously tested throughout this stage to ensure that it meets all wished system qualities.
+        Deployment automation:
+            A deployment is required every time the application is installed in an environment for testing, but the most critical moment for deployment automation is rollout time.
+            The deployment is automated, allowing for the reliable delivery of new functionality to users within minutes if needed.
+        Your pipeline needs platform provisioning and configuration management:
+            The deployment pipeline is supported by platform provisioning and system configuration management.
+            It allows teams to create, maintain, and tear down complete environments automatically or at the push of a button.
+        Orchestrating it all: release and pipeline orchestration:
+            The multiple stages in a deployment pipeline involve different groups of people collaborating and supervising the release of the new version of your application.
+    3/6 Describe Azure Pipelines:
+        Azure Pipelines is a cloud service that automatically builds and tests your code project and makes it available to other users.
+        Azure Pipelines combines continuous integration (CI) and continuous delivery (CD) to test and build your code and ship it to any target constantly and consistently.
+        Version control systems:
+            Before you use continuous integration and continuous delivery practices for your applications, you must have your source code in a version control system.
+            Azure Pipelines integrates with GitHub, GitLab, Azure Repos, Bitbucket, and Subversion.
+        Package formats:
+            To produce packages that others can consume, you can publish NuGet, npm, or Maven packages to the built-in package management repository in Azure Pipelines.
+            You also can use any other package management repository of your choice.
+    4/6 Understand Azure Pipelines key terms:
+        Agent:
+            When your build or deployment runs, the system begins one or more jobs.
+            An agent is installable software that runs a build or deployment job.
+        Artifact:
+            An artifact is a collection of files or packages published by a build.
+            Artifacts are made available for the tasks, such as distribution or deployment.
+        Build:
+            A build represents one execution of a pipeline. It collects the logs associated with running the steps and the test results.
+        Continuous delivery:
+            Continuous delivery (CD) (also known as Continuous Deployment) is a process by which code is built, tested, and deployed to one or more test and production stages.
+        Continuous integration:
+            Continuous integration (CI) is the practice used by development teams to simplify the testing and building of code.
+        Deployment target:
+            A deployment target is a virtual machine, container, web app, or any service used to host the developed application.
+            A pipeline might deploy the app to one or more deployment targets after the build is completed and tests are run.
+        Job:
+            A build contains one or more jobs. 
+            Most jobs run on an agent.
+            A job represents an execution boundary of a set of steps. 
+            All the steps run together on the same agent.
+            ! For example, you might build two configurations - x86 and x64. In this case, you have one build and two jobs. !
+        Pipeline:
+            A pipeline defines the continuous integration and deployment process for your app. 
+            It's made up of steps called tasks.
+            It can be thought of as a script that describes how your test, build, and deployment steps are run.
+        Release:
+            When you use the visual designer, you can create a release or a build pipeline.
+            A release is a term used to describe one execution of a release pipeline.
+        Stage:
+            Stages are the primary divisions in a pipeline: "build the app," "run integration tests," and "deploy to user acceptance testing" are good examples of stages.
+        Task:
+            A task is the building block of a pipeline.
+            For example, a build pipeline might consist of build and test tasks. A release pipeline consists of deployment tasks.
+            Each task runs a specific job in the pipeline.
+        Trigger:
+            A trigger is set up to tell the pipeline when to run.
+    5/6 TEST:
+    6/6 SUMMARY:
+********************************************************************************************************************************************
+STEP 3.2:
+    
