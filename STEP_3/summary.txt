@@ -195,4 +195,511 @@ STEP 3.3:
     8/8 SUMMARY:
 ********************************************************************************************************************************************
 STEP 3.4:  
-    
+    1/8 INTRODUCTION:
+        Continuous Integration is one of the key pillars of DevOps.
+        Once you have your code in a version control system, you need an automated way of integrating the code on an ongoing basis.
+    2/8 Introduction to continuous integration:
+        Continuous integration (CI) is the process of automating the build and testing of code every time a team member commits changes to version control.
+        Committing code triggers an automated build system to grab the latest code from the shared repository and build, test, and validate the entire main branch (also known as the trunk or main).
+        The idea is to minimize the cost of integration by making it an early consideration.
+    3/8 Learn the four pillars of continuous integration:
+        Continuous integration relies on four key elements for successful implementation: 
+            - a Version Control System, 
+            - Package Management System, 
+            - Continuous Integration System, 
+            - and an Automated Build Process.
+    4/8 Explore benefits of continuous integration:
+        Continuous integration (CI) provides many benefits to the development process, including:
+            - Improving code quality based on rapid feedback
+            - Triggering automated testing for every code change
+            - Reducing build times for quick feedback and early detection of problems (risk reduction)
+        Key Benefit: Rapid Feedback for Code Quality:
+            Possibly the most essential benefit of continuous integration is rapid feedback to the developer.
+            Continuous integration also enables tracking metrics to assess code quality over time. 
+                For example, unit test passing rates, code that breaks frequently, code coverage trends, and code analysis.
+    5/8 Describe build properties:
+        You may have noticed that in some demos, the build number was just an integer, 
+            yet in other demos, there's a formatted value that was based upon the date.
+        Build number formatting:
+        Build status:
+            But there are times that we might not want the build to run, even if it's triggered.
+        Authorization and timeouts:
+            The authorization scope determines whether the build job is limited to accessing resources in the current project. 
+                Or accessing resources in other projects in the project collection.
+        Badges:
+            Some development teams like to show the state of the build on an external monitor or website.
+    6/8 Enabling Continuous Integration with Azure Pipelines:
+        ! LAB !
+        Task 1: (skip if done) Create and configure the team project
+        Exercise 1: Include build validation as part of a Pull Request
+            Task 1: Import the YAML build definition
+                Creating pipeline with yaml file in repository (azure.yaml)
+            Task 2: Branch Policies
+                In this task, you will add policies to the main branch and only allow changes using Pull Requests that comply with the defined policies.
+                You want to ensure that changes in a branch are reviewed before they are merged.
+                ! On the main tab of the repository settings, in the Build Validation section, click + (Add a new build policy) and in the Build pipeline list, select eshoponweb-ci-pr then click Save. !
+            Task 3: Working with Pull Requests
+                In this task, you will use the Azure DevOps portal to create a Pull Request, using a new branch to merge a change into the protected main branch.
+        Exercise 2: Configure CI Pipeline as Code with YAML
+            In this exercise, you will configure CI Pipeline as code with YAML.
+            Task 1: Import the YAML build definition for CI
+                Selecting yaml file (azure.yaml) as CI file.
+            Task 2: Enable Continuous Integration
+                "
+                     trigger:
+                        branches:
+                            include:
+                            - main
+                        paths:
+                            include:
+                            - src/web/*
+                "
+                This will automatically trigger the build pipeline if any change is made to the main branch and the web application code (the src/web folder).
+            Task 3: Test the CI pipeline
+                In this task, you will create a Pull Request, using a new branch to merge a change into the protected main branch and automatically trigger the CI pipeline.
+    7/8 TEST:
+    8/8 SUMMARY:
+********************************************************************************************************************************************
+STEP 3.5:  
+    1/6 INTRODUCTION:
+        This module describes pipeline strategies, configuration, implementation of multi-agent builds, and what source controls Azure Pipelines supports.
+    2/6 Configure agent demands:
+        Not all agents are the same. 
+        We've seen that they can be based on different operating systems, but they can also install different dependencies.
+        ! There's a tab for Capabilities on the Agent Pools page (at the Organization level) when you select an agent. !
+    3/6 Implement multi-agent builds:
+        You can use multiple build agents to support multiple build machines.
+        Multiple jobs in a pipeline:
+            Adding multiple jobs to a pipeline lets you:
+                - Break your pipeline into sections that need different agent pools or self-hosted agents.
+                - Publish artifacts in one job and consume them in one or more subsequent jobs.
+                - Build faster by running multiple jobs in parallel.
+                - Enable conditional execution of tasks.
+    4/6 Explore source control types supported by Azure Pipelines:
+        Azure Pipelines offers both YAML-based pipelines and the classic editor.
+    5/6 TEST:
+    6/6 SUMMARY:
+********************************************************************************************************************************************
+STEP 3.6: 
+    1/8 INTRODUCTION:
+        This module details Azure Pipelines anatomy and structure, templates, YAML resources, and how to use multiple repositories in your pipeline.
+        Also, it explores communication to deploy using Azure Pipelines to target servers.
+    2/8 Describe the anatomy of a pipeline:
+        Azure Pipelines can automatically build and validate every pull request and commit to your Azure Repos Git repository.
+        ! Azure Pipelines can be used with Azure DevOps public projects and Azure DevOps private projects. !
+        There are other triggers for other events, such as:
+            - Pull Requests (PRs) can also filter branches and paths.
+            - Schedules allow you to specify cron expressions for scheduling pipeline runs.
+            ! - Pipelines will enable you to trigger pipelines when other pipelines are complete, allowing pipeline chaining. !
+        Jobs: 
+            A job is a set of steps an agent executes in a queue (or pool).
+            Jobs are atomic – they're performed wholly on a single agent.
+                - dependsOn - a way to specify dependencies and ordering of multiple jobs.
+                - condition – a binary expression: if it evaluates to true, the job runs; if false, the job is skipped.
+                - strategy - used to control how jobs are parallelized.
+                - pool – the pool name (queue) to run this job on.
+                - steps – the set of steps to execute.
+                - timeoutInMinutes and cancelTimeoutInMinutes for controlling timeouts.
+        Dependencies:
+            When you define multiple stages in a pipeline, by default, they run sequentially in the order in which you define them in the YAML file.
+            !
+                The exception to this is when you add dependencies. 
+                With dependencies, stages run in the order of the dependsOn requirements.
+            !
+        Checkout:
+            Classic builds implicitly checkout any repository artifacts, but pipelines require you to be more explicit using the checkout keyword:
+                - Jobs check out the repo they're contained in automatically unless you specify checkout: none.
+                - Deployment jobs don't automatically check out the repo, so you'll need to specify checkout: self for deployment jobs if you want access to the YAML file's repo.
+        Download:
+            Downloading artifacts requires you to use the download keyword.
+        Resources:
+            What if your job requires source code in another repository? You'll need to use resources. Resources let you reference:
+                - other repositories
+                - pipelines
+                - builds (classic builds)
+                - containers (for container jobs)
+                - packages
+            ! To reference code in another repo, specify that repo in the resources section and then reference it via its alias in the checkout step. !
+        Steps are Tasks:
+            Steps are the actual "things" that execute in the order specified in the job.
+        Variables:
+            It would be tough to achieve any sophistication in your pipelines without variables.
+            Every variable is a key: value pair. 
+                The key is the variable's name, and it has a value.
+            We can reach variable in such a way: "$(name)"
+    3/8 Understand the pipeline structure:
+        A pipeline is one or more stages that describe a CI/CD process.
+        ! If you have a single-stage, you can omit the stages keyword and directly specify the jobs keyword. !
+        ! If you've a single-stage and a single job, you can omit the stages and jobs keywords and directly specify the steps keyword. !
+        
+        Stage:
+            A stage is a collection of related jobs. 
+            By default, stages run sequentially. Each stage starts only after the preceding stage is complete.
+        Job:
+            A job is a collection of steps run by an agent or on a server. 
+            Jobs can run conditionally and might depend on previous jobs.
+        Deployment strategies:
+            runOnce:
+            Rolling:
+                A rolling deployment replaces instances of the previous version of an application with instances of the new version.
+            Canary:
+                Using this strategy, you can first roll out the changes to a small subset of servers.
+                The canary deployment strategy is an advanced deployment strategy that helps mitigate the risk of rolling out new versions of applications.
+                ! As you gain more confidence in the new version, you can release it to more servers in your infrastructure and route more traffic to it. !
+        Lifecycle hooks:
+            You can achieve the deployment strategies technique by using lifecycle hooks.
+        Steps:
+            A step is a linear sequence of operations that make up a job. 
+            Each step runs its process on an agent and accesses the pipeline workspace on a local hard drive.
+            ! This behavior means environment variables aren't preserved between steps, but file system changes are. !
+        Tasks:
+            Tasks are the building blocks of a pipeline. 
+            There's a catalog of tasks available to choose from.
+    4/8 Detail templates:
+        Template references:
+            You can export reusable sections of your pipeline to a separate file.
+            These individual files are known as templates.
+
+            ! Templates themselves can include other templates. !
+
+            - Stage templates
+                You can define a set of stages in one file and use it multiple times in other files.
+            - Job templates
+                You can define a set of jobs in one file and use it multiple times in other files.
+            - Step templates
+                You can define a set of steps in one file and use it multiple times in another.
+            - Variable templates
+                You can define a set of variables in one file and use it multiple times in other files.
+    5/8 Explore YAML resources:
+        Resources in YAML represent sources of pipelines, repositories, and containers.
+        General schema:
+            "
+                resources:
+                    pipelines: [ pipeline ]
+                    repositories: [ repository ]
+                    containers: [ container ]
+            "
+        Pipeline resource:
+            If you have an Azure pipeline that produces artifacts, your pipeline can consume the artifacts by using the pipeline keyword to define a pipeline resource.
+        Container resource:
+            Container jobs let you isolate your tools and dependencies inside a container.
+            The agent launches an instance of your specified container then runs steps inside it.
+            ! Service containers run alongside a job to provide various dependencies like databases. !
+        Repository resource:
+            Let the system know about the repository if:
+                - If your pipeline has templates in another repository.
+                - If you want to use multi-repo checkout with a repository that requires a service connection.
+    6/8 Use multiple repositories in your pipeline: 
+        You might have micro git repositories providing utilities used in multiple pipelines within your project.
+        Pipelines often rely on various repositories.
+        Specify multiple repositories:
+            Repositories can be specified as a repository resource or in line with the checkout step.
+            ! Supported repositories are Azure Repos Git, GitHub, and BitBucket Cloud. !
+                - If there are no checkout steps, the default behavior is checkout: self is the first step.
+                - If there's a single checkout: none step, no repositories are synced or checked out.
+                - If there's a single checkout: self step, the current repository is checked out.
+                - If there's a single checkout step that isn't self or none, that repository is checked out instead of self.
+            Repository resource - How to do it?:
+                If your repository type requires a service connection or other extended resources field, you must use a repository resource.
+            Inline - How to do it?:
+                If your repository doesn't require a service connection, you can declare it according to your checkout step.
+                "
+                    steps:
+                        - checkout: git://MyProject/MyRepo # Azure Repos Git repository in the same organization
+                "
+                If you're using inline syntax, choose the ref by appending @ref. For example:
+                    "
+                        - checkout: git://MyProject/MyRepo@features/tools # checks out the features/tools branch
+                        - checkout: git://MyProject/MyRepo@refs/heads/features/tools # also checks out the features/tools branch.
+                        - checkout: git://MyProject/MyRepo@refs/tags/MyTag # checks out the commit referenced by MyTag.
+                    "
+        GitHub repository:
+            Azure Pipelines can automatically build and validate every pull request and commit to your GitHub repository.
+            Azure Pipelines must be granted access to your repositories to trigger their builds and fetch their code during builds:
+                - GitHub App.
+                - OAuth.
+                - Personal access token (PAT).
+    7/8 TEST:
+    8/8 SUMMARY:
+********************************************************************************************************************************************
+STEP 3.7:
+    1/11 INTRODUCTION:
+        GitHub Actions are the primary mechanism for automation within GitHub.
+    2/11 What are Actions?:
+        Actions are the mechanism used to provide workflow automation within the GitHub environment.
+        They're often used to build continuous integration (CI) and continuous deployment (CD) solutions.
+        They're defined in YAML and stay within GitHub repositories.
+        Actions are executed on "runners," either hosted by GitHub or self-hosted.
+    3/11 Explore Actions flow:
+        GitHub tracks events that occur. 
+        Events can trigger the start of workflows.
+    4/11 Understand workflows:
+        Workflows define the automation required. 
+        It details the events that should trigger the workflow.
+        ! Workflows are written in YAML and live within a GitHub repository at the place .github/workflows. !
+    5/11 Describe standard workflow syntax elements:
+        Workflows include several standard syntax elements:
+            - Name: is the name of the workflow. 
+                It's optional but is highly recommended. 
+                It appears in several places within the GitHub UI.
+            - On: is the event or list of events that will trigger the workflow.
+            - Jobs: is the list of jobs to be executed. 
+                Workflows can contain one or more jobs.
+            - Runs-on: tells Actions which runner to use.
+            - Steps: It's the list of steps for the job. Steps within a job execute on the same runner.
+            - Uses: tells Actions, which predefined action needs to be retrieved. 
+                For example, you might have an action that installs node.js.
+            - Run: tells the job to execute a command on the runner. 
+                For example, you might execute an NPM command.
+    6/11 Explore events:
+        Events are implemented by the "on" clause in a workflow definition.
+        There are several types of events that can trigger workflows:
+            - Scheduled events
+                "
+                    on:
+                        schedule:
+                            - cron: '0 8-17 * * 1-5'
+                "
+            - Code events
+                Code events will trigger most actions. 
+                It occurs when an event of interest occurs in the repository.
+            - Manual events
+                There's a unique event that is used to trigger workflow runs manually.
+                You should use the workflow_dispatch event.
+                Your workflow must be in the default branch for the repository.
+            - Webhook events:
+                Workflows can be executed when a GitHub webhook is called.
+            - External events:
+                Events can be on repository_dispatch.
+                That allows events to fire from external systems.
+    7/11 Explore jobs:
+        Workflows contain one or more jobs. 
+        A job is a set of steps that will be run in order on a runner.
+        ! Steps within a job execute on the same runner and share the same filesystem. !
+        ! The logs produced by jobs are searchable, and artifacts produced can be saved. !
+        Jobs with dependencies:
+            By default, if a workflow contains multiple jobs, they run in parallel.
+        !
+            Sometimes you might need one job to wait for another job to complete.
+            You can do that by defining dependencies between the jobs.
+            "
+                jobs:
+                    startup:
+                        runs-on: ubuntu-latest
+                        steps:
+                        - run: ./setup_server_configuration.sh
+                    build:
+                        needs: startup
+                        steps:
+                        - run: ./build_new_server.sh
+            "
+        !
+    8/11 Explore runners:
+        When you execute jobs, the steps execute on a Runner.
+        ! GitHub provides several hosted runners to avoid you needing to spin up your infrastructure to run actions. !
+        ! Now, the maximum duration of a job is 6 hours, and for a workflow is 72 hours. !
+        We have a JS or Container-Based actions: 
+            JS will be faster.
+        Self-hosted runners:
+            If you need different configurations to the ones provided, you can create a self-hosted runner.
+        GitHub strongly recommends that you don't use self-hosted runners in public repos.:
+            Doing it would be a significant security risk, as you would allow someone (potentially) to run code on your runner within your network.
+    9/11 Examine release and test an action:
+        Actions will often produce console output. 
+        You don't need to connect directly to the runners to retrieve that output.
+        The console output from actions is available directly from within the GitHub UI.
+        Release Management for Actions:
+            While you might be happy to retrieve the latest version of the action, 
+                there are many situations where you might want a specific version of the action.
+            - Tags (actions/install-timer@v2.0.1)
+            - SHA-based hashes (actions/install-timer@327239021f7cc39fe7327647b213799853a9eb98)
+            - Branches (actions/install-timer@develop)
+    10/11 TEST:
+    11/11 SUMMARY:
+********************************************************************************************************************************************
+STEP 3.8:
+    1/12 INTRODUCTION:
+        This module details continuous integration using GitHub Actions and describes environment 
+            variables, artifacts, best practices, and how to secure your pipeline using encrypted variables and secrets.
+    2/12 Describe continuous integration with actions:
+    3/12 Examine environment variables:
+        When using Actions to create CI or CD workflows, you'll typically need to pass variable values to the actions.
+        It's done by using Environment Variables.
+        - Built-in environment variables
+            GitHub provides a series of built-in environment variables. It all has a GITHUB_ prefix.
+            -- GITHUB_WORKFLOW is the name of the workflow.
+            -- GITHUB_ACTION is the unique identifier for the action.
+            -- GITHUB_REPOSITORY is the name of the repository (but also includes the name of the owner in owner/repo format)
+        - Using variables in workflows
+    4/12 Share artifacts between jobs:
+        When using Actions to create CI or CD workflows, you'll often need to pass artifacts created by one job to another.
+        ! The most common ways to do it are by using the upload-artifact and download-artifact actions. !
+        -- Upload-artifact:
+            This action can upload one or more files from your workflow to be shared between jobs.
+            We can use "actions/upload-artifact" job.
+            "
+            - uses: actions/upload-artifact
+              with:
+                name: harness-build-log
+                path: bin/output/logs/harness.log
+            "
+        -- Download-artifact:
+            There's a corresponding action for downloading (or retrieving) artifacts.
+            "
+                - uses: actions/download-artifact
+                    with:
+                        name: harness-build-log
+            "
+        ! If no path is specified, it's downloaded to the current directory. !
+        ! You can delete artifacts directly in the GitHub UI. Or you can also specify retention period. !
+    5/12 Examine Workflow badges:
+        Badges can be used to show the status of a workflow within a repository.
+    6/12 Describe best practices for creating actions:
+    7/12 Mark releases with Git tags:
+        Releases are software iterations that can be packed for release.
+    8/12 Create encrypted secrets:
+        Actions often can use secrets within pipelines. Common examples are passwords or keys.
+        In GitHub actions, It's called Secrets.
+        Secrets:
+            Secrets are similar to environment variables but encrypted. They can be created at two levels:
+                - Repository
+                - Organization
+        ! To create secrets for a repository, you must be the repository's owner. !
+    9/12 Use secrets in a workflow:
+        Secrets aren't passed automatically to the runners when workflows are executed.
+        "db_username: ${{ secrets.DBUserName }}"
+    10/12 Implementing GitHub Actions for CI/CD:
+        ! LAB !
+        Task 1: Create a public repository in GitHub and import eShopOnWeb
+        Exercise 1: Setup your GitHub Repository and Azure access
+            In this exercise, you will create an "Azure Service Principal" to authorize GitHub accessing your Azure subscription from GitHub Actions.
+            You will also setup the GitHub workflow that will build, test and deploy your website to Azure.
+            
+            Task 1: Create an Azure Service Principal and save it as GitHub secret
+                Firstly, create new Resource Group in Azure.
+                Secondly, run "az ad sp create-for-rbac --name GH-Action-eshoponweb --role contributor --scopes /subscriptions/SUBSCRIPTION-ID/resourceGroups/RESOURCE-GROUP --sdk-auth"
+                ! The command will output a JSON object, you will later use it as a GitHub secret for the workflow. !
+                ! You also need to run the following command to register the resource provider for the Azure App Service you will deploy later: !
+                    "az provider register --namespace Microsoft.Web"
+            Task 2: Modify and execute the GitHub workflow
+                In this task, you will modify the given GitHub workflow and execute it to deploy the solution in your own subscription.
+            Task 3: Review GitHub Workflow execution
+            (OPTIONAL) Task 4: Add manual approval pre-deploy using GitHub Environments
+            Exercise 2: Remove the Azure lab resources
+                az group list --query "[?starts_with(name,'rg-az400-eshoponweb')].name" --output tsv
+                 az group list --query "[?starts_with(name,'rg-az400-eshoponweb')].[name]" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
+    11/12 TEST:
+    12/12 SUMMARY:       
+********************************************************************************************************************************************
+STEP 3.9:
+    1/10 INTRODUCTION:
+        Container:
+            Containers are the third computing model, after bare metal and virtual machines – and containers are here to stay.
+            Unlike a VM, which provides hardware virtualization, a container provides operating-system-level virtualization by abstracting the "user space," not the entire operating system.
+            Containers make highly efficient use of the underlying server infrastructure.
+        What other benefits do containers offer?:
+            Containers are portable. 
+            A container will run wherever Docker is supported.
+            Containers can be efficient: fast to deploy, fast to boot, fast to patch, and quick to update.
+    2/10 Examine structure of containers:
+        If you're a programmer or techie, you've at least heard of Docker: a helpful tool for packing, shipping, and running applications within "containers."
+        What are containers, and why do you need them?:
+            Containers are a solution to the problem of how to get the software to run reliably when moved from one computing environment to another.
+        How do containers solve this problem?:
+            A container consists of an entire runtime environment:
+                - An application, plus all its dependencies.
+                - Libraries and other binaries.
+                - Configuration files needed to run it, bundled into one package.
+        What's the difference between containers and virtualization?:
+            Containers and VMs are similar in their goals: to isolate an application and its dependencies into a self-contained unit that can run anywhere.
+            - Virtual Machines: 
+                A VM is essentially an emulation of a real computer that executes programs like a real computer.
+                VMs run on top of a physical machine using a "hypervisor."
+            - Container:
+                Unlike a VM, which provides hardware virtualization, a container provides operating-system-level virtualization by abstracting the "user space."
+    3/10 Work with Docker containers:
+        Container Lifecycle
+            The standard steps when working with containers are:
+                    - Docker build - You create an image by executing a Dockerfile.
+                    - Docker pull - You retrieve the image, likely from a container registry.
+                    - Docker run - You execute the container. An instance is created of the image.
+                    ! You can often execute the docker run without needing first to do the docker pull. !
+                    ! In that case, Docker will pull the image and then run it. Next time, it won't need to pull it again. !
+    4/10 Understand Dockerfile core concepts:
+        Dockerfiles are text files that contain the commands needed by docker build to assemble an image.
+        ! 
+            An image that doesn't have a parent is called a base image. In that rare case, the FROM line can be omitted, 
+                or FROM scratch can be used instead.
+        !
+    5/10 Examine multi-stage dockerfiles:
+        What are multi-stage Dockerfiles? 
+            Multi-stage builds give the benefits of the builder pattern without the hassle of maintaining three separate files.
+        At first, it simply looks like several dockerfiles stitched together. 
+        Multi-stage Dockerfiles can be layered or inherited.
+        Breakdown of stages:
+            The first stage provides the base of our optimized runtime image.
+                ! Notice it derives from mcr.microsoft.com/dotnet/core/aspnet:3.1. !
+        Why is publish separate from the build?:
+            You'll likely want to run unit tests to verify your compiled code.
+            Or the aggregate of the compiled code from multiple developers being merged continues to function as expected.
+            You could place the following stage between builder and publish to run unit tests:
+                "
+                    FROM build AS test
+                    WORKDIR /src/Web.test
+                    RUN dotnet test
+                "
+        Why is base first?:
+    6/10 Examine considerations for multiple stage builds:
+        Adopt container modularity:
+            Try to avoid creating overly complex container images that couple together several applications.
+            Instead, use multiple containers and try to keep each container to a single purpose.
+    7/10 Explore Azure container-related services:
+    8/10 Deploying Docker containers to Azure App Service web apps:
+        ! LAB !
+        Task 1: (skip if done) Create and configure the team project
+        Task 2: (skip if done) Import eShopOnWeb Git Repository
+        Task 3: (skip if done) Set main branch as default branch
+
+        Exercise 1: Manage the service connection
+            In this exercise, you will configure the service connection with your Azure Subscription then import and run the CI pipeline.
+            Task 1: (skip if done) Manage the service connection
+                You can create a connection from Azure Pipelines to external and remote services for executing tasks in a job.
+                In this task, you will create a service principal by using the Azure CLI, which will allow Azure DevOps to:
+                    - Deploy resources on your azure subscription.
+                    - Push the Docker image to Azure Container Registry.
+                    - Add a role assignment to allow Azure App Service pull the Docker image from Azure Container Registry.
+                ! You will need a service principal to deploy Azure resources from Azure Pipelines. !
+
+                ! From the Bash prompt, in the Cloud Shell pane, run the following commands to retrieve the values of the Azure subscription ID attribute:
+                    "
+                        subscriptionName=$(az account show --query name --output tsv)
+                        subscriptionId=$(az account show --query id --output tsv)
+                        echo $subscriptionName
+                        echo $subscriptionId
+                    "
+                
+                ! From the Bash prompt, in the Cloud Shell pane, run the following command to create a service principal:
+                    "
+                        az ad sp create-for-rbac --name sp-az400-azdo --role contributor --scopes /subscriptions/$subscriptionId
+                    "
+        Exercise 2: Import and run the CI pipeline
+            In this exercise, you will import and run the CI pipeline.
+
+        Exercise 3: Import and run the CD pipeline
+            In this exercise, you will configure the service connection with your Azure Subscription then import and run the CD pipeline.
+            Task 1: Add a new role assignment:
+                "
+                    spId=$(az ad sp list --display-name sp-az400-azdo --query "[].id" --output tsv)
+                    echo $spId
+                    roleName=$(az role definition list --name "User Access Administrator" --query "[0].name" --output tsv)
+                    echo $roleName
+                "
+                After getting the service principal ID and the role name, let’s create the role assignment by running this command (replace rg-az400-container-NAME with your resource group name)
+                "
+                    az role assignment create --assignee $spId --role $roleName --resource-group "rg-az400-container-NAME"
+                "
+
+
+
+
+
