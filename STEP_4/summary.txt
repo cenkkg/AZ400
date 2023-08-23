@@ -1,0 +1,22 @@
+********************************************************************************************************************************************
+STEP 4.1:
+    1/8 INTRODUCTION:
+        This module introduces continuous delivery concepts and their implementation in a traditional IT development cycle.
+    2/8 Explore traditional IT development cycle:
+        Silo-based development:
+            Long release cycles, numerous tests, code freezes, night and weekend work, and many people ensure that everything works.
+    3/8 What is continuous delivery?:
+        Continuous delivery (CD) is a set of processes, tools, and techniques for rapid, reliable, and continuous software development and delivery.
+    4/8 Move to continuous delivery:
+        But creating working software isn't the same as delivering working software.
+    5/8 Understand releases and deployments:
+        One of the essential steps in moving software more quickly to production is changing how we deliver software to production.
+        What is a release, and what is a deployment?:
+            When we talk about releases and deployments, we see that commonly used tools deal differently with the terminology as we did in the previous chapter.
+            ! A release is a package or container containing a versioned set of artifacts specified in a release pipeline in your CI/CD process. !
+            Deployment is the action of running the tasks for one stage, which results in a tested and deployed application and other activities specified for that stage.
+        Separating technical releases from functional releases:
+    6/8 Understand release process versus release:
+        We start with defining a release process or release pipeline.
+        The release pipeline contains all the steps you walk through when you move your artifact from one of the artifact sources discussed earlier through the stages or environments.
+        The release itself is something different. The release is an instance of the release pipeline. You can compare it with object instantiation.
