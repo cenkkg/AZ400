@@ -698,7 +698,11 @@ STEP 3.9:
                 "
                     az role assignment create --assignee $spId --role $roleName --resource-group "rg-az400-container-NAME"
                 "
-
+            Task 2: Import and run the CD pipeline
+            Task 3: Test the solution
+    9/10 TEST:
+    10/10 SUMMARY:
+    
 
 
 
