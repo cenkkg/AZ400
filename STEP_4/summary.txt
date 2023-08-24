@@ -20,3 +20,143 @@ STEP 4.1:
         We start with defining a release process or release pipeline.
         The release pipeline contains all the steps you walk through when you move your artifact from one of the artifact sources discussed earlier through the stages or environments.
         The release itself is something different. The release is an instance of the release pipeline. You can compare it with object instantiation.
+    7/8 TEST:
+    8/8 SUMMARY:
+********************************************************************************************************************************************
+STEP 4.2:
+    1/14 INTRODUCTION:
+        This module describes Azure Pipelines capabilities, build and release tasks, and multi-configuration and multi-agent differences.
+    2/14 Describe Azure DevOps release pipeline capabilities:
+        Azure DevOps has extended support for pipelines as code (also called YAML pipelines) for continuous deployment 
+            and started introducing various release management capabilities into pipelines as code.
+        ! The existing UI-based release management solution in Azure DevOps is referred to as classic release. !
+    3/14 Explore release pipelines:
+        A release pipeline takes artifacts and releases them through stages and finally into production.
+        1- The first component in a release pipeline is an artifact:
+            Artifacts can come from different sources.
+            The most common source is a package from a build pipeline.
+            Another commonly seen artifact source is, for example, source control.
+        2- Furthermore, a release pipeline has a trigger: the mechanism that starts a new release:
+            A trigger can be:
+                A manual trigger, where people start to release by hand.
+                A scheduled trigger, where a release is triggered based on a specific time.
+                A continuous deployment trigger, where another event triggers a release. For example, a completed build.
+        3- Another vital component of a release pipeline is stages or sometimes called environments. 
+            It's where the artifact will be eventually installed.
+        4- Another component of a release pipeline is approval.
+            People often want to sign a release before installing it in the environment.
+            ! In more mature organizations, this manual approval process can be 
+                replaced by an automatic process that checks the quality before the components move on to the next stage. !
+        5- Finally, we have the tasks within the various stages.
+            The tasks are the steps that need to be executed to install, configure, and validate the installed artifact.
+    4/14 Explore artifact sources:
+        What is an artifact? 
+            An artifact is a deployable component of your application. 
+            These components can then be deployed to one or more environments.
+        ! In general, the idea about build and release pipelines and Continuous Delivery is to build once and deploy many times. !
+        ! The configuration is the only thing you want to change when deploying an artifact to a new environment.
+            The contents of the package should never change. !
+        Artifact Sources:
+            - Build Pipeline
+            - Version control
+            - Network Share
+            - Container Registries
+    5/14 Choose the appropriate artifact source:
+        When you use a release pipeline to deploy your packages to production, you need traceability.
+        Another crucial aspect of your artifacts is auditability.
+            You want to know who changed that line of code and who triggered the build that produces the artifact deployed.
+        ! A proper mechanism to make sure you can provide the correct traceability and auditability is using immutable packages. !
+        !
+            Using a build pipeline that produces a package stored in a location that humans 
+                can't access, you ensure the sources are unchanged throughout the whole-release process. 
+            It's an essential concept of release pipelines.
+        !
+    6/14 Exercise - select an artifact source:
+        In this exercise, you'll investigate Artifact Sources.
+    7/14 Examine considerations for deployment to stages:
+        When you have a clear view of the different stages you'll deploy, you need to think about when you want to deploy to these stages.
+        ! When designing your release strategy, choose your triggers carefully and consider the required release cadence. !
+    8/14 Exercise - set up stages:
+        In this demonstration, you'll investigate Stages.
+        ! The same artifact sources move through all of the stages. !
+        ! 
+            The lightning bolt icon on each stage shows that we can set a trigger as a pre-deployment condition. 
+            The person icon on both ends of a stage shows that we can have pre and post-deployment approvers.
+        !
+        Concurrent stages:
+        Stage versus Environment:
+            You may have wondered why these items are called Stages and not Environments.
+            In the current configuration, we're using them for different environments.
+    9/14 Explore build and release tasks:
+        A build and release platform requires executing any number of repeatable actions during the build process.
+        Tasks are units of executable code used to do selected actions in a specified order.
+        ! Add steps to specify what you want to build. The tests you want to run and all the other steps needed to complete the build process. !
+    10/14 Explore custom build and release tasks:
+        Instead of using out-of-the-box tasks, a command line, or a shell script, you can also use your custom build and release task.
+    11/14 Explore release jobs:
+        You can organize your build or release pipeline into jobs.
+        ! A release job is executed by a build/release agent. !
+    12/14 Configuring Pipelines as Code with YAML:
+        Task 1: (skip if done) Create and configure the team project
+        Task 2: (skip if done) Import eShopOnWeb Git Repository
+        Task 2: Create Azure resources
+            Run these commands in cloudShell one by one:
+                - LOCATION='<region>'
+                - RESOURCEGROUPNAME='az400m05l11-RG'
+                - az group create --name $RESOURCEGROUPNAME --location $LOCATION
+                - SERVICEPLANNAME='az400m05l11-sp1'
+                - az appservice plan create --resource-group $RESOURCEGROUPNAME --name $SERVICEPLANNAME --sku B3
+                - WEBAPPNAME=eshoponWebYAML$RANDOM$RANDOM
+                - az webapp create --resource-group $RESOURCEGROUPNAME --plan $SERVICEPLANNAME --name $WEBAPPNAME
+        Exercise 1: Configure CI/CD Pipelines as Code with YAML in Azure DevOps
+            In this exercise, you will configure CI/CD Pipelines as code with YAML in Azure DevOps.
+            Task 1: Add a YAML build definition
+                In this task, you will add a YAML build definition to the existing project.
+            Task 2: Add continuous delivery to the YAML definition
+                In this task, you will add continuous delivery to the YAML-based definition of the pipeline you created in the previous task.
+                "
+                    - stage: Deploy
+                      displayName: Deploy to an Azure Web App
+                      jobs:
+                        - job: Deploy
+                          pool:
+                            vmImage: 'windows-2019'
+                          steps:
+                "
+            Task 3: Review the deployed site
+        Exercise 2: Configure Environment settings for CI/CD Pipelines as Code with YAML in Azure DevOps
+            In this exercise, you will add approvals to a YAML-based Pipeline in Azure DevOps.
+            Task 1: Set up Pipeline Environments
+                YAML Pipelines as Code don’t have Release/Quality Gates as we have with Azure DevOps Classic Release Pipelines.
+        Exercise 3: Remove the Azure lab resources
+    13/14 TEST:
+    14/14 SUMMARY:
+********************************************************************************************************************************************
+STEP 4.3:
+    1/10 INTRODUCTION:
+        This module explores the critical release strategy recommendations organizations must consider when designing automated deployments.
+        It explains how to define components of a release pipeline and artifact sources, creates approval, and configure release gates.
+    2/10 Understand the delivery cadence and three types of triggers:
+        Release and stages make use of triggers. There are three types of triggers we recognize.
+        - Continuous deployment trigger
+            You can set up this trigger on your release pipeline. 
+            Once you do that, your release pipeline will trigger every time a build completes and creates a new release.
+        - Scheduled triggers
+            It allows you to set up a time-based manner to start a new release—for example, every night at 3:00 AM or 12:00 PM.
+            You can have one or multiple daily schedules, but it will always run at this specific time.
+        - Manual trigger
+            With a manual trigger, a person or system triggers the release based on a specific event.
+    3/10 Exercise - select your delivery and deployment cadence:
+        In this exercise, you'll investigate Delivery Cadence.
+        Steps:
+            Let's look at when our release pipeline is used to create deployments.
+            Mainly, it will involve the use of triggers.
+            ! In the Continuous Deployment trigger pane, click the Disabled option to enable continuous deployment. It will then say Enabled. !
+            ! Once it's selected, every time a build completes, deployment of the release pipeline will start. !
+        Scheduled deployments:
+            You might not want to have a deployment start every time a build completes.
+            It might be disruptive to testers downstream if it was happening too often.
+            Instead, it might make sense to set up a deployment schedule.
+        Pre-deployment triggers:
+            Click the lightning bolt on the Development stage to open the pre-deployment conditions.
+    4/10 
