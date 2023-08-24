@@ -159,4 +159,13 @@ STEP 4.3:
             Instead, it might make sense to set up a deployment schedule.
         Pre-deployment triggers:
             Click the lightning bolt on the Development stage to open the pre-deployment conditions.
-    4/10 
+    4/10 Explore release approvals:
+        As we've described in the introduction, Continuous Delivery is all about delivering on-demand.
+    5/10 Exercise - set up manual approvals:
+        In this exercise, you'll investigate Manual Approval.
+        Steps:
+            ! Even if the process is later automated, people might still want manual control until they become comfortable with the processes. 
+            Explicit manual approvals can be a great way to achieve that. !
+    6/10 Explore release gates:
+        Release gates give you more control over the start and completion of the deployment pipeline.
+        
