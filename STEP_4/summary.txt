@@ -1,0 +1,403 @@
+********************************************************************************************************************************************
+STEP 4.1:
+    1/8 INTRODUCTION:
+        This module introduces continuous delivery concepts and their implementation in a traditional IT development cycle.
+    2/8 Explore traditional IT development cycle:
+        Silo-based development:
+            Long release cycles, numerous tests, code freezes, night and weekend work, and many people ensure that everything works.
+    3/8 What is continuous delivery?:
+        Continuous delivery (CD) is a set of processes, tools, and techniques for rapid, reliable, and continuous software development and delivery.
+    4/8 Move to continuous delivery:
+        But creating working software isn't the same as delivering working software.
+    5/8 Understand releases and deployments:
+        One of the essential steps in moving software more quickly to production is changing how we deliver software to production.
+        What is a release, and what is a deployment?:
+            When we talk about releases and deployments, we see that commonly used tools deal differently with the terminology as we did in the previous chapter.
+            ! A release is a package or container containing a versioned set of artifacts specified in a release pipeline in your CI/CD process. !
+            Deployment is the action of running the tasks for one stage, which results in a tested and deployed application and other activities specified for that stage.
+        Separating technical releases from functional releases:
+    6/8 Understand release process versus release:
+        We start with defining a release process or release pipeline.
+        The release pipeline contains all the steps you walk through when you move your artifact from one of the artifact sources discussed earlier through the stages or environments.
+        The release itself is something different. The release is an instance of the release pipeline. You can compare it with object instantiation.
+    7/8 TEST:
+    8/8 SUMMARY:
+********************************************************************************************************************************************
+STEP 4.2:
+    1/14 INTRODUCTION:
+        This module describes Azure Pipelines capabilities, build and release tasks, and multi-configuration and multi-agent differences.
+    2/14 Describe Azure DevOps release pipeline capabilities:
+        Azure DevOps has extended support for pipelines as code (also called YAML pipelines) for continuous deployment 
+            and started introducing various release management capabilities into pipelines as code.
+        ! The existing UI-based release management solution in Azure DevOps is referred to as classic release. !
+    3/14 Explore release pipelines:
+        A release pipeline takes artifacts and releases them through stages and finally into production.
+        1- The first component in a release pipeline is an artifact:
+            Artifacts can come from different sources.
+            The most common source is a package from a build pipeline.
+            Another commonly seen artifact source is, for example, source control.
+        2- Furthermore, a release pipeline has a trigger: the mechanism that starts a new release:
+            A trigger can be:
+                A manual trigger, where people start to release by hand.
+                A scheduled trigger, where a release is triggered based on a specific time.
+                A continuous deployment trigger, where another event triggers a release. For example, a completed build.
+        3- Another vital component of a release pipeline is stages or sometimes called environments. 
+            It's where the artifact will be eventually installed.
+        4- Another component of a release pipeline is approval.
+            People often want to sign a release before installing it in the environment.
+            ! In more mature organizations, this manual approval process can be 
+                replaced by an automatic process that checks the quality before the components move on to the next stage. !
+        5- Finally, we have the tasks within the various stages.
+            The tasks are the steps that need to be executed to install, configure, and validate the installed artifact.
+    4/14 Explore artifact sources:
+        What is an artifact? 
+            An artifact is a deployable component of your application. 
+            These components can then be deployed to one or more environments.
+        ! In general, the idea about build and release pipelines and Continuous Delivery is to build once and deploy many times. !
+        ! The configuration is the only thing you want to change when deploying an artifact to a new environment.
+            The contents of the package should never change. !
+        Artifact Sources:
+            - Build Pipeline
+            - Version control
+            - Network Share
+            - Container Registries
+    5/14 Choose the appropriate artifact source:
+        When you use a release pipeline to deploy your packages to production, you need traceability.
+        Another crucial aspect of your artifacts is auditability.
+            You want to know who changed that line of code and who triggered the build that produces the artifact deployed.
+        ! A proper mechanism to make sure you can provide the correct traceability and auditability is using immutable packages. !
+        !
+            Using a build pipeline that produces a package stored in a location that humans 
+                can't access, you ensure the sources are unchanged throughout the whole-release process. 
+            It's an essential concept of release pipelines.
+        !
+    6/14 Exercise - select an artifact source:
+        In this exercise, you'll investigate Artifact Sources.
+    7/14 Examine considerations for deployment to stages:
+        When you have a clear view of the different stages you'll deploy, you need to think about when you want to deploy to these stages.
+        ! When designing your release strategy, choose your triggers carefully and consider the required release cadence. !
+    8/14 Exercise - set up stages:
+        In this demonstration, you'll investigate Stages.
+        ! The same artifact sources move through all of the stages. !
+        ! 
+            The lightning bolt icon on each stage shows that we can set a trigger as a pre-deployment condition. 
+            The person icon on both ends of a stage shows that we can have pre and post-deployment approvers.
+        !
+        Concurrent stages:
+        Stage versus Environment:
+            You may have wondered why these items are called Stages and not Environments.
+            In the current configuration, we're using them for different environments.
+    9/14 Explore build and release tasks:
+        A build and release platform requires executing any number of repeatable actions during the build process.
+        Tasks are units of executable code used to do selected actions in a specified order.
+        ! Add steps to specify what you want to build. The tests you want to run and all the other steps needed to complete the build process. !
+    10/14 Explore custom build and release tasks:
+        Instead of using out-of-the-box tasks, a command line, or a shell script, you can also use your custom build and release task.
+    11/14 Explore release jobs:
+        You can organize your build or release pipeline into jobs.
+        ! A release job is executed by a build/release agent. !
+    12/14 Configuring Pipelines as Code with YAML:
+        Task 1: (skip if done) Create and configure the team project
+        Task 2: (skip if done) Import eShopOnWeb Git Repository
+        Task 2: Create Azure resources
+            Run these commands in cloudShell one by one:
+                - LOCATION='<region>'
+                - RESOURCEGROUPNAME='az400m05l11-RG'
+                - az group create --name $RESOURCEGROUPNAME --location $LOCATION
+                - SERVICEPLANNAME='az400m05l11-sp1'
+                - az appservice plan create --resource-group $RESOURCEGROUPNAME --name $SERVICEPLANNAME --sku B3
+                - WEBAPPNAME=eshoponWebYAML$RANDOM$RANDOM
+                - az webapp create --resource-group $RESOURCEGROUPNAME --plan $SERVICEPLANNAME --name $WEBAPPNAME
+        Exercise 1: Configure CI/CD Pipelines as Code with YAML in Azure DevOps
+            In this exercise, you will configure CI/CD Pipelines as code with YAML in Azure DevOps.
+            Task 1: Add a YAML build definition
+                In this task, you will add a YAML build definition to the existing project.
+            Task 2: Add continuous delivery to the YAML definition
+                In this task, you will add continuous delivery to the YAML-based definition of the pipeline you created in the previous task.
+                "
+                    - stage: Deploy
+                      displayName: Deploy to an Azure Web App
+                      jobs:
+                        - job: Deploy
+                          pool:
+                            vmImage: 'windows-2019'
+                          steps:
+                "
+            Task 3: Review the deployed site
+        Exercise 2: Configure Environment settings for CI/CD Pipelines as Code with YAML in Azure DevOps
+            In this exercise, you will add approvals to a YAML-based Pipeline in Azure DevOps.
+            Task 1: Set up Pipeline Environments
+                YAML Pipelines as Code don’t have Release/Quality Gates as we have with Azure DevOps Classic Release Pipelines.
+        Exercise 3: Remove the Azure lab resources
+    13/14 TEST:
+    14/14 SUMMARY:
+********************************************************************************************************************************************
+STEP 4.3:
+    1/10 INTRODUCTION:
+        This module explores the critical release strategy recommendations organizations must consider when designing automated deployments.
+        It explains how to define components of a release pipeline and artifact sources, creates approval, and configure release gates.
+    2/10 Understand the delivery cadence and three types of triggers:
+        Release and stages make use of triggers. There are three types of triggers we recognize.
+        - Continuous deployment trigger
+            You can set up this trigger on your release pipeline. 
+            Once you do that, your release pipeline will trigger every time a build completes and creates a new release.
+        - Scheduled triggers
+            It allows you to set up a time-based manner to start a new release—for example, every night at 3:00 AM or 12:00 PM.
+            You can have one or multiple daily schedules, but it will always run at this specific time.
+        - Manual trigger
+            With a manual trigger, a person or system triggers the release based on a specific event.
+    3/10 Exercise - select your delivery and deployment cadence:
+        In this exercise, you'll investigate Delivery Cadence.
+        Steps:
+            Let's look at when our release pipeline is used to create deployments.
+            Mainly, it will involve the use of triggers.
+            ! In the Continuous Deployment trigger pane, click the Disabled option to enable continuous deployment. It will then say Enabled. !
+            ! Once it's selected, every time a build completes, deployment of the release pipeline will start. !
+        Scheduled deployments:
+            You might not want to have a deployment start every time a build completes.
+            It might be disruptive to testers downstream if it was happening too often.
+            Instead, it might make sense to set up a deployment schedule.
+        Pre-deployment triggers:
+            Click the lightning bolt on the Development stage to open the pre-deployment conditions.
+    4/10 Explore release approvals:
+        As we've described in the introduction, Continuous Delivery is all about delivering on-demand.
+    5/10 Exercise - set up manual approvals:
+        In this exercise, you'll investigate Manual Approval.
+        Steps:
+            ! Even if the process is later automated, people might still want manual control until they become comfortable with the processes. 
+            Explicit manual approvals can be a great way to achieve that. !
+    6/10 Explore release gates:
+        Release gates give you more control over the start and completion of the deployment pipeline.
+        They're often set up as pre-deployment and post-deployment conditions.
+        Basicly, gates are telling the realease can continue or not.
+    7/10 Use release gates to protect quality:
+        A quality gate is the best way to enforce a quality policy in your organization.
+        ! It's there to answer one question: can I deliver my application to production or not? !
+        Defining quality gates improves the release process, and you should always consider adding them.
+    8/10 Controlling Deployments using Classic Release Gates:
+        ! LAB !
+        This lab covers the configuration of the deployment gates and details how to use them to control the execution of Azure Pipelines.
+        There are 4 types of gates included by default in every account:
+            - Invoke Azure Function: Trigger the execution of an Azure Function and ensures a successful completion.
+            - Query Azure Monitor alerts: Observe the configured Azure Monitor alert rules for active alerts.
+            - Invoke REST API: Make a call to a REST API and continues if it returns a successful response.
+            - Query work items: Ensure the number of matching work items returned from a query is within a threshold.
+
+        Exercise 1: 
+            Task 1: (skip if already done) Create and configure the team project
+            Task 2: (skip if already done) Import eShopOnWeb Git Repository
+            Task 3: (skip if already done) Configure CI Pipeline as Code with YAML in Azure DevOps
+        Exercise 2: Creating the necessary Azure Resources for the Release Pipeline:
+            Task 1: Create two Azure web apps
+                In this task, you will create two Azure web apps representing the Canary and Production environments,
+                    into which you’ll deploy the application via Azure Pipelines.
+                Create Resource Group in PowerShell (RG):
+                    "
+                        REGION='centralus'
+                        RESOURCEGROUPNAME='az400m04l09-RG'
+                        az group create -n $RESOURCEGROUPNAME -l $REGION
+                    "
+                Afterwards, create App Service Plan:
+                    "
+                        SERVICEPLANNAME='az400m04l09-sp1'
+                        az appservice plan create -g $RESOURCEGROUPNAME -n $SERVICEPLANNAME --sku S1
+                    "
+                Create two web apps with unique app names:
+                    "
+                        SUFFIX=$RANDOM$RANDOM
+                        az webapp create -g $RESOURCEGROUPNAME -p $SERVICEPLANNAME -n RGATES$SUFFIX-Canary
+                        az webapp create -g $RESOURCEGROUPNAME -p $SERVICEPLANNAME -n RGATES$SUFFIX-Prod
+                    "
+            Task 2: Configure an Application Insights resource:
+                In the Azure portal, use the Search resources, services, and docs text box at the top of the page to search for Application Insights and,
+                     in the list of results, select Application Insights.
+
+        Exercise 3: Configure the release pipeline:
+            In this exercise, you will configure a release pipeline.
+
+            Task 1: Set Up Release Tasks
+                Creating Release Pipeline
+                Creating 2 Apps in Azure portal
+                By using Release Pipeline, uploading web-apps to 2 environments
+        
+        Exercise 4: Configure release gates:
+            In this exercise, you will set up Quality Gates in the release pipeline.
+            
+            Task 1: Configure pre-deployment gates for approvals:
+                Creating Pre-Deployment conditions. 
+            Task 2: Configure post-deployment gates for Azure Monitor:
+                Creating Post-Deployment conditions. 
+        
+        Exercise 5: Test release gates:
+            In this exercise, you will test the release gates by updating the application, which will trigger a deployment.
+            Task 1: Update and deploy application after adding release gates:
+
+    9/10 TEST:
+    10/10 SUMMARY:
+********************************************************************************************************************************************
+STEP 4.4:   
+    1/10 INTRODUCTION:
+        This module details target environment provisioning, service connections creation process, and test infrastructure setup. 
+        Learn how to configure functional test automation and run availability tests.
+    2/10 Provision and configure target environments:
+        The release pipeline deploys software to a target environment.
+        But it isn't only the software that will be deployed with the release pipeline.
+        ! If you focus on Continuous Delivery, Infrastructure as Code and spinning up Infrastructure as part of your release pipeline is essential. !
+
+            - On-premises servers:
+                The scripts you use to start or stop the on-premises servers should be part of your source control and delivered to your release pipeline as a build artifact.
+                To take it one step further and configure the server, you should look at technologies like PowerShell Desired State Configuration(DSC).
+            - Infrastructure as a service:
+                Creating a script or template can make a server or other infrastructural components like a SQL server, a network, or an IP address.
+                By defining a template or using a command line and saving it in a script file, you can use that file in your release pipeline tasks to execute it on your target cloud.
+                ! Technologies like Azure Resource Manager are great for creating Infrastructure on demand. !
+            - Clusters:
+                When you run an Infrastructure as a Service cluster, you must create and maintain the cluster. 
+                It means that you need to provide the templates to create a cluster.
+                ! When you run a container cluster, you can use the container cluster technologies like AKS. ! 
+        Service connections:
+            When a pipeline needs resource access, you must often create service connections.
+    3/10 Exercise - set up service connections:
+        Steps:
+            You can set up a service connection to environments to create a secure and safe connection to the environment you want to deploy.
+            By creating Service Connection, we are, actually, creating Service Principal. 
+    4/10 Configure automated integration and functional test automation:
+        The first thing that comes to mind about Continuous Delivery is that everything needs to be automated.
+    5/10 Understand Shift-left:
+        The goal for shifting left is to move quality upstream by performing tests early in the pipeline.
+        ! They get pushed further until they're run at the last possible moment, and the benefits intended to be gained from building those tests aren't realized until long after the code has been committed. !
+    6/10 Set up and run availability tests:
+        After you've deployed your web app or website to any server, you can set up tests to monitor its availability and responsiveness.
+        ! It's helpful to check if your application is still running and gives a healthy response. !
+    7/10 Explore Azure Load Testing:
+        Azure Load Testing Preview is a fully managed load-testing service that enables you to generate a high-scale load.
+        ! The service simulates your applications' traffic, helping you optimize application performance, scalability, or capacity. !
+        ! You can create a load test using existing test scripts based on Apache JMeter. 
+            Azure Load Testing abstracts the infrastructure to run your JMeter script and load test your application. !
+        ! You can automate regression testing by running load tests as part of your continuous integration and continuous deployment (CI/CD) workflow. !
+        You can automatically run a load test at the end of each sprint or in a staging environment to validate a release candidate build.
+        You can trigger Azure Load Testing from Azure Pipelines or GitHub Actions workflows.
+    8/10 Setting Up and Running Tests:
+        ! LAB !
+        Software of any complexity can fail in unexpected ways in response to changes.
+        Manual testing is the slowest, least reliable, most expensive way to test software.
+        There are many kinds of automated tests for software applications.
+            The simplest, lowest level test is the unit test. 
+            At a slightly higher level, there are integration tests and functional tests. 
+            Other kinds of tests, such as UI tests, load tests, stress tests, and smoke tests, are beyond the scope of this lab.
+        
+        Task 1: (skip if done) Create and configure the team project
+        Task 2: (skip if done) Import the eShopOnWeb Git Repository
+
+        Exercise 1: Setup Tests in CI pipeline
+            In this exercise, you will setup tests in CI pipeline.
+            Task 1: (Skip if done) Import the YAML build definition for CI
+            Task 2: Add tests to the CI pipeline
+                In this task, you will add the integration and functional tests to the CI Pipeline.
+                Add Intergration and Functional tests tasks:
+                    "
+                     - task: DotNetCoreCLI@2
+                        displayName: Integration Tests
+                        inputs:
+                            command: 'test'
+                            projects: 'tests/IntegrationTests/*.csproj'
+                    "
+                    and
+                    "
+                     - task: DotNetCoreCLI@2
+                        displayName: Functional Tests
+                        inputs:
+                            command: 'test'
+                            projects: 'tests/FunctionalTests/*.csproj'
+                    "
+    9/10 TEST:
+    10/10 SUMMARY:
+********************************************************************************************************************************************
+STEP 4.5:   
+    1/8 INTRODUCTION:
+        This module describes the creation of task and variable groups, 
+            creating custom build and release tasks, and using release variables and stage variables in your pipeline.
+    2/8 Examine task groups:
+        A task group allows you to encapsulate a sequence of tasks, 
+            already defined in a build or a release pipeline, into a single reusable task 
+            that can be added to a build or release pipeline, just like any other task.
+    3/8 Exercise - create and manage task groups:
+        In this exercise, you'll investigate Task Groups.
+        Steps:
+            Let's now look at how a release pipeline can reuse groups of tasks.
+    4/8 Explore variables in release pipelines:
+        Variables give you a convenient way to get critical bits of data into various parts of the pipeline.
+        As the name suggests, the contents of a variable may change between releases, stages of jobs of your pipeline.
+        + Predefined variables:
+            When running your release pipeline, you always need variables that come from the agent or context of the release pipeline.
+                For example, the agent directory where the sources are downloaded, 
+                    the build number or build ID, 
+                    the agent's name, 
+                    or any other information.
+            This information is accessible in predefined variables that you can use in your tasks.
+        - Release pipeline variables:
+            Choose a release pipeline variable when you need to use the same value across all the stages and tasks in the release pipeline, 
+                and you want to change the value in a single place.
+        - Stage variables:
+            Share values across all the tasks within one specific stage by using stage variables.
+            Use a stage-level variable for values that vary from stage to stage (and are the same for all the tasks in a stage).
+        -- Variable groups:
+            Share values across all the definitions in a project by using variable groups. 
+            We'll cover variable groups later in this module.
+        --- Normal and secret variables:
+            Because the pipeline tasks are executed on an agent, variable values are passed to the various tasks using environment variables.
+            You can mark a variable in the release pipeline as secret. 
+            This way, the secret is hidden from the log output. It's beneficial when writing a password or other sensitive information.
+    5/8 Understand variable groups:
+        A variable group stores values that you want to make available across multiple builds and release pipelines.
+        Examples:
+            - Store the username and password for a shared server.
+            - Store a share connection string.
+            - Store the geolocation of an application.
+            - Store all settings for a specific application.
+    6/8 Exercise - create and manage variable groups:
+        In this exercise, you'll investigate Variable Groups.
+        Steps:
+            Let's now look at how a release pipeline can use predefined variables, called Variable Groups.
+    7/8 TEST:
+    8/8 SUMMARY:
+********************************************************************************************************************************************
+STEP 4.6:  
+    1/13 INTRODUCTION:
+        This module describes how to automate the inspection of health events, configure notifications, and set up service hooks to monitor pipelines.
+    2/13 Automate inspection of health:
+        Inspection of the release pipeline and release is something you should consider from the start.
+        Release gates:
+            ! Release gates allow the automatic collection of health signals from external services 
+                and then promote the release when all the signs are booming simultaneously or stop the deployment on timeout. !
+        Events, subscriptions, and notifications:
+            Events are raised when specific actions occur, like when a release is started or a build is completed.
+            A notification subscription is associated with a supported event type.
+                The subscription ensures you get notified when a specific event occurs.
+            Notifications are usually emails that you receive when an event occurs to which you're subscribed.
+        Service hooks:
+            Service hooks enable you to do tasks on other services when events happen in your Azure DevOps Services projects.
+        Reporting:
+            Reporting is the most static approach to inspection but also the most evident in many cases.
+    3/13 Explore events and notifications:
+        One of the first requests many people have when working in a system that does asynchronous actions is to get notifications or alerts.
+        Alerts:
+            The more alerts you get that aren't relevant, the more significant the change that people will never look at the alerts and notifications and will miss the important ones.
+        Target audience and delivery mechanism:
+            Within Azure DevOps, there are multiple ways to define your alerts.
+            By using query and filter mechanisms, you can filter out specific alerts.
+    4/13 Explore service hooks:
+        Service hooks enable you to do tasks on other services when your Azure DevOps Services projects happen.
+            For example, create a card in Trello when a work item is created.
+            Or send a push notification to your team's mobile devices when a build fails.
+    5/13 Exercise - set up service hooks to monitor the pipeline:
+        In this exercise, you'll investigate Service Hooks.
+        Steps:
+            Let's now look at how a release pipeline can communicate with other services by using service hooks.
+            Azure DevOps can be integrated with a wide variety of other applications.
+            ! By using service hooks, we can notify other applications that an event has occurred within Azure DevOps. 
+                We could also send a message to a team in Microsoft Teams or Slack.
+                We could also trigger an action in Bamboo or Jenkins. !
+            ! In that case, you can almost always use the Web Hooks option as a generic way to communicate. 
+                It allows you to make an HTTP POST when an event occurs. !
+    
