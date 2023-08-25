@@ -366,6 +366,38 @@ STEP 4.6:
     1/13 INTRODUCTION:
         This module describes how to automate the inspection of health events, configure notifications, and set up service hooks to monitor pipelines.
     2/13 Automate inspection of health:
-        
-
+        Inspection of the release pipeline and release is something you should consider from the start.
+        Release gates:
+            ! Release gates allow the automatic collection of health signals from external services 
+                and then promote the release when all the signs are booming simultaneously or stop the deployment on timeout. !
+        Events, subscriptions, and notifications:
+            Events are raised when specific actions occur, like when a release is started or a build is completed.
+            A notification subscription is associated with a supported event type.
+                The subscription ensures you get notified when a specific event occurs.
+            Notifications are usually emails that you receive when an event occurs to which you're subscribed.
+        Service hooks:
+            Service hooks enable you to do tasks on other services when events happen in your Azure DevOps Services projects.
+        Reporting:
+            Reporting is the most static approach to inspection but also the most evident in many cases.
+    3/13 Explore events and notifications:
+        One of the first requests many people have when working in a system that does asynchronous actions is to get notifications or alerts.
+        Alerts:
+            The more alerts you get that aren't relevant, the more significant the change that people will never look at the alerts and notifications and will miss the important ones.
+        Target audience and delivery mechanism:
+            Within Azure DevOps, there are multiple ways to define your alerts.
+            By using query and filter mechanisms, you can filter out specific alerts.
+    4/13 Explore service hooks:
+        Service hooks enable you to do tasks on other services when your Azure DevOps Services projects happen.
+            For example, create a card in Trello when a work item is created.
+            Or send a push notification to your team's mobile devices when a build fails.
+    5/13 Exercise - set up service hooks to monitor the pipeline:
+        In this exercise, you'll investigate Service Hooks.
+        Steps:
+            Let's now look at how a release pipeline can communicate with other services by using service hooks.
+            Azure DevOps can be integrated with a wide variety of other applications.
+            ! By using service hooks, we can notify other applications that an event has occurred within Azure DevOps. 
+                We could also send a message to a team in Microsoft Teams or Slack.
+                We could also trigger an action in Bamboo or Jenkins. !
+            ! In that case, you can almost always use the Web Hooks option as a generic way to communicate. 
+                It allows you to make an HTTP POST when an event occurs. !
     
