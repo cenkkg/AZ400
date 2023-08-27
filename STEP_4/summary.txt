@@ -400,4 +400,39 @@ STEP 4.6:
                 We could also trigger an action in Bamboo or Jenkins. !
             ! In that case, you can almost always use the Web Hooks option as a generic way to communicate. 
                 It allows you to make an HTTP POST when an event occurs. !
+    6/13 Configure Azure DevOps notifications:
+        There are four notification types that you can manage in Azure DevOps:
+            - Personal notifications.
+            - Team notifications.
+            - Project notifications.
+            - Global notifications.
+    7/13 Configure GitHub notifications:
+        Github.com notifications provide updates about the activity that you've subscribed to.
+    8/13 Explore how to measure quality of your release process:
+        How do you measure the quality of your release process?
+            The quality of your release process can't be measured directly because it's a process.
+            ! What you can measure is how well your process works. !
+    9/13 Examine release notes and documentation:
+        When you deploy a new release to a customer or install new software on your server, 
+            and you want to communicate what has been released to your customer, the usual way is to use release notes.
+        But where do the release notes come from? There are different ways to store your release notes.
+            - Document store
+                An often-used way of storing release notes is by creating text files or documents in some document store.
+                ! The downside of this approach is that there's no direct connection between the release 
+                    in the release management tool and the release notes that belong to this release. !
+            - Wiki
+                The most used way for customers is to store the release notes in a Wiki.
+                Release notes are created as a page in the wiki and by using hyperlinks.
+                Relations can be associated with the build, the release, and the artifacts.
+            - In the codebase
+                When you look at it, release notes belong strictly to the release of the features you implemented and your code. 
+                ! In that case, the best option might be to store release notes as part of your code repository. !
+            - In a work item
+                Another option is to store your release notes as part of your work items. 
+                Work items can be Bugs, Tasks, Product Backlog Items, or User Stories.
+    10/13 Examine considerations for choosing release management tools:
+        When choosing the right Release Management tool, you should look at the possibilities of all the different components and map them to your needs.
+    11/13 Explore common release management tools:
+    12/13 TEST:
+    13/13 SUMMARY:
     
