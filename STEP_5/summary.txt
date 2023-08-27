@@ -1,3 +1,55 @@
 ********************************************************************************************************************************************
 STEP 5.1:
-    1/6
+    1/6 INTRODUCTION:
+        This module introduces deployment patterns and explains microservices architecture to help 
+            improve the deployment cycle and examine classical and modern deployment patterns.
+        ! Continuous Delivery is an extension of Continuous Integration. 
+        It's all about getting changes to customers quickly and using sustainable methods. !
+    2/6 Explore microservices architecture:
+        Today, you'll frequently hear the term microservices. A microservice is an autonomous, independently deployable, and scalable software component.
+        ! Each microservice has its lifecycle and Continuous Delivery pipeline. 
+        If you built them correctly, you could deploy new microservice versions without impacting other system parts. !
+    3/6 Examine classical deployment patterns:
+        When we have our prerequisites to deliver our software continuously, 
+            we need to start thinking about a deployment pattern.
+    4/6 Understand modern deployment patterns:
+        ! To overcome, we need to embrace that some features can only be tested in production. !
+        When we take this concept of feature toggling and use it with our deployment patterns, 
+            we can test our software in production.
+    5/6 TEST:
+    6/6 SUMMARY:
+********************************************************************************************************************************************
+STEP 5.2:
+    1/8 INTRODUCTION:
+        This module describes the blue-green deployment process and introduces feature toggle techniques to implement in the development process.
+    2/8 What is blue-green deployment?:
+        Blue-green deployment is a technique that reduces risk and downtime by running two identical environments. 
+            These environments are called blue and green.
+    3/8 Explore deployment slots:
+        When using a cloud platform like Azure, doing blue-green deployments is relatively easy.
+        ! You can use an out-of-the-box feature called deployment slots when using web apps. !
+        You can use a deployment slot to set up a new version of your application, and when ready, swap the production environment with the new staging environment.
+            It's done by an internal swapping of the IP addresses of both slots.
+    4/8 Exercise - set up a blue–green deployment:
+        Let's now look at how a release pipeline can be used to implement blue-green deployments.
+        Initially create App in Azure Portal.
+    5/8 Introduction to feature toggles:
+        Feature Flags allow you to change how our system works without making significant changes to the code.
+        Feature Flags are sometimes called Feature Toggles instead.
+        ! By exposing new features by just "flipping a switch" at runtime, 
+            we can deploy new software without exposing any new or changed functionality to the end-user. !
+        The business owner plays a vital role in the process, and you need to work closely with them to choose the right strategy.
+        What are feature toggles?:
+            Feature toggles are also known as feature flippers, feature flags, feature switches, conditional features, and so on.
+            ! Besides the power they give you on the business side, they also provide an advantage on the development side. !
+        How to implement a feature toggle:
+            In the purest form, a feature toggle is an IF statement.
+    6/8 Describe feature toggle maintenance:
+        A feature toggle is just code. 
+        And to be more specific, conditional code. 
+        It adds complexity to the code and increases the technical debt.
+    7/8 TEST:
+    8/8 SUMMARY:
+********************************************************************************************************************************************
+STEP 5.3:
+    
