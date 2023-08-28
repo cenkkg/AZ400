@@ -52,4 +52,29 @@ STEP 5.2:
     8/8 SUMMARY:
 ********************************************************************************************************************************************
 STEP 5.3:
+    1/6 INTRODUCTION:
+        This module describes deployment strategies around canary releases and dark launching and examines traffic managers.
+    2/6 Explore canary releases:
+        The term canary release comes from the days that miners took a canary with them into the coal mines.
+        A canary release is a way to identify potential problems without exposing all your end users to the issue at once.
+        ! The idea is that you tell a new feature only to a minimal subset of users. !
+    3/6 Examine Traffic Manager:
+        ! To control traffic in Azure, you can use a component called Azure Traffic Manager. !
+        Azure Traffic Manager:
+            Azure Traffic Manager is a DNS-based traffic load balancer that enables you to distribute traffic optimally 
+                to services across global Azure regions while providing high availability and responsiveness.
+        Controlling your canary release:
+            Using a combination of feature toggles, deployment slots, and Traffic Manager, 
+                you can achieve complete control over the traffic flow and enable your canary release.
+    4/6 Understand dark launching:
+        ! Dark launching is in many ways like canary releases. !
+        ! However, the difference here's that you're looking to assess users' responses to new features in your frontend 
+            rather than testing the performance of the backend. !
+        How to implement dark launching:
+            In essence, dark launching doesn't differ from a canary release or the implementation and switching of a feature toggle.
+            The feature is released and only exposed at a particular time.
+    5/6 TEST:
+    6/6 SUMMARY:
+********************************************************************************************************************************************
+STEP 5.4:
     
