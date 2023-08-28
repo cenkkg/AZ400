@@ -1,0 +1,352 @@
+********************************************************************************************************************************************
+STEP 5.1:
+    1/6 INTRODUCTION:
+        This module introduces deployment patterns and explains microservices architecture to help 
+            improve the deployment cycle and examine classical and modern deployment patterns.
+        ! Continuous Delivery is an extension of Continuous Integration. 
+        It's all about getting changes to customers quickly and using sustainable methods. !
+    2/6 Explore microservices architecture:
+        Today, you'll frequently hear the term microservices. A microservice is an autonomous, independently deployable, and scalable software component.
+        ! Each microservice has its lifecycle and Continuous Delivery pipeline. 
+        If you built them correctly, you could deploy new microservice versions without impacting other system parts. !
+    3/6 Examine classical deployment patterns:
+        When we have our prerequisites to deliver our software continuously, 
+            we need to start thinking about a deployment pattern.
+    4/6 Understand modern deployment patterns:
+        ! To overcome, we need to embrace that some features can only be tested in production. !
+        When we take this concept of feature toggling and use it with our deployment patterns, 
+            we can test our software in production.
+    5/6 TEST:
+    6/6 SUMMARY:
+********************************************************************************************************************************************
+STEP 5.2:
+    1/8 INTRODUCTION:
+        This module describes the blue-green deployment process and introduces feature toggle techniques to implement in the development process.
+    2/8 What is blue-green deployment?:
+        Blue-green deployment is a technique that reduces risk and downtime by running two identical environments. 
+            These environments are called blue and green.
+    3/8 Explore deployment slots:
+        When using a cloud platform like Azure, doing blue-green deployments is relatively easy.
+        ! You can use an out-of-the-box feature called deployment slots when using web apps. !
+        You can use a deployment slot to set up a new version of your application, and when ready, swap the production environment with the new staging environment.
+            It's done by an internal swapping of the IP addresses of both slots.
+    4/8 Exercise - set up a blue–green deployment:
+        Let's now look at how a release pipeline can be used to implement blue-green deployments.
+        Initially create App in Azure Portal.
+    5/8 Introduction to feature toggles:
+        Feature Flags allow you to change how our system works without making significant changes to the code.
+        Feature Flags are sometimes called Feature Toggles instead.
+        ! By exposing new features by just "flipping a switch" at runtime, 
+            we can deploy new software without exposing any new or changed functionality to the end-user. !
+        The business owner plays a vital role in the process, and you need to work closely with them to choose the right strategy.
+        What are feature toggles?:
+            Feature toggles are also known as feature flippers, feature flags, feature switches, conditional features, and so on.
+            ! Besides the power they give you on the business side, they also provide an advantage on the development side. !
+        How to implement a feature toggle:
+            In the purest form, a feature toggle is an IF statement.
+    6/8 Describe feature toggle maintenance:
+        A feature toggle is just code. 
+        And to be more specific, conditional code. 
+        It adds complexity to the code and increases the technical debt.
+    7/8 TEST:
+    8/8 SUMMARY:
+********************************************************************************************************************************************
+STEP 5.3:
+    1/6 INTRODUCTION:
+        This module describes deployment strategies around canary releases and dark launching and examines traffic managers.
+    2/6 Explore canary releases:
+        The term canary release comes from the days that miners took a canary with them into the coal mines.
+        A canary release is a way to identify potential problems without exposing all your end users to the issue at once.
+        ! The idea is that you tell a new feature only to a minimal subset of users. !
+    3/6 Examine Traffic Manager:
+        ! To control traffic in Azure, you can use a component called Azure Traffic Manager. !
+        Azure Traffic Manager:
+            Azure Traffic Manager is a DNS-based traffic load balancer that enables you to distribute traffic optimally 
+                to services across global Azure regions while providing high availability and responsiveness.
+        Controlling your canary release:
+            Using a combination of feature toggles, deployment slots, and Traffic Manager, 
+                you can achieve complete control over the traffic flow and enable your canary release.
+    4/6 Understand dark launching:
+        ! Dark launching is in many ways like canary releases. !
+        ! However, the difference here's that you're looking to assess users' responses to new features in your frontend 
+            rather than testing the performance of the backend. !
+        How to implement dark launching:
+            In essence, dark launching doesn't differ from a canary release or the implementation and switching of a feature toggle.
+            The feature is released and only exposed at a particular time.
+    5/6 TEST:
+    6/6 SUMMARY:
+********************************************************************************************************************************************
+STEP 5.4:
+    1/6 INTRODUCTION:
+        This module introduces A/B testing and progressive exposure deployment concepts and explores CI/CD with deployment rings--ring-based deployment.
+    2/6 What is A/B testing?:
+        A/B testing (also known as split testing or bucket testing) compares two versions of a web page or app against 
+            each other to determine which one does better.
+    3/6 Explore CI-CD with deployment rings:
+        Progressive exposure deployment, also called ring-based deployment, was first discussed in Jez Humble's Continuous Delivery book.
+        ! With a ring-based deployment, you first deploy your changes to risk-tolerant customers and progressively roll out to a more extensive set of customers. !
+        Rings are, in essence, an extension of the canary stage. 
+        The canary release releases to a stage to measure impact. Adding another ring is essentially the same thing.
+    4/6 Exercise - Ring-based deployment:
+        In this exercise, you'll investigate ring-based deployment.
+        Steps: 
+            Let's look at how a release pipeline can stage features using ring-based deployments.
+            ! I could do it in authenticated systems by having those users as members of a security group 
+                and letting members of that group use the new features. !
+            ! However, on a public website, I might not have logged-in users. 
+                Instead, I might want to direct a small percentage of the traffic to use the new features. !
+
+                (1)
+            "   (For First Ring - 0)
+                az webapp traffic-routing set --resource-group $(ResourceGroupName) --name $(WebsiteName) --distribution staging=10
+            "   
+
+                (2)
+            This distribution will cause 10% of the web traffic to be sent to the new feature Site (currently the staging slot).
+            "   (For Second Ring - 1)
+                az webapp traffic-routing set --resource-group $(ResourceGroupName) --name $(WebsiteName) --distribution staging=30
+            "   
+            It allows us to move the new feature into broader distribution if it works ok in smaller users.
+
+                (3)
+            The first step in releasing the new code to the public is to swap the new feature site (that is, the staging site) with the production so that production is now running the new code.
+            "
+                az webapp deployment slot swap -g $(ResourceGroupName) -n $(WebsiteName) --slot staging --target-slot production    
+            "
+
+                (4)
+            Stopping traffic for 'staging' stage. So, no traffic will be sent to 'staging' stage after that.
+            "
+                az webapp traffic-routing set --resource-group $(ResourceGroupName) --name $(WebsiteName) --distribution staging=0
+            "
+    5/6 TEST:
+    6/6 SUMMARY:
+********************************************************************************************************************************************
+STEP 5.5:
+    1/6 INTRODUCTION:
+        This module describes the integration with GitHub and single sign-on (SSO) for authentication, service principal, and managed service identities.
+    2/6 Integrate GitHub with single sign-on (SSO):
+        To use SSO, you need to connect your identity provider to GitHub at the organization level.
+    3/6 Explore service principals:
+        Azure AD offers different kinds of mechanisms for authentication.
+        In DevOps Projects, though, one of the most important is the use of Service Principals.
+        Azure AD applications:
+            Applications are registered with an Azure AD tenant within Azure Active Directory.
+            Registering an application creates an identity configuration. 
+            You also determine who can use it:
+                - Accounts in the same organizational directory.
+                - Accounts in any organizational directory.
+                - Accounts in any organizational directory and Microsoft Accounts (personal).
+                - Microsoft Accounts (Personal accounts only).
+        Client secret:
+            Once the application is created, you then should create at least one client secret for the application.
+        Grant permissions:
+            The application identity can then be granted permissions within services and resources that trust Azure Active Directory.
+        Service principal:
+            To access resources, an entity must be represented by a security principal. 
+            To connect, the entity must know:
+                - TenantID.
+                - ApplicationID.
+                - Client Secret.
+    4/6 Explore Managed Identity:
+        Another authentication mechanism offered by Azure AD is Managed identities.
+        Identity of the service:
+            Many Azure services expose their own identity.
+            It isn't an identity that you need to manage.
+                For example, you don't need to worry about password policies and so on.
+            You can assign permissions to that identity, as with any other Azure AD identity.
+                In the ADF example, you can add the ADF MSI as an Azure SQL Database user and add it to roles within the database.
+        Managed identity types:
+            - System-assigned - It's the types of identities described above. Many, but not all, services expose these identities.
+            - User-assigned - you can create a managed identity as an Azure resource. 
+                It can then be assigned to one or more instances of a service.
+    5/6 TEST:
+    6/6 SUMMARY:
+********************************************************************************************************************************************
+STEP 5.6:
+    1/14 INTRODUCTION:
+        This module explores ways to rethink application configuration data and the separation of concerns method.
+        It helps you understand configuration patterns and how to integrate Azure Key Vault with Azure Pipelines.
+    2/14 Rethink application configuration data:
+        Configuration information in files:
+            Most application runtime environments include configuration information that is held in files deployed with the application.
+        A ray of hope: The DevOps movement:
+            In recent years, we've seen a shift around following some excellent practices around effective DevOps and some great tools 
+                (Chef, Puppet) for managing Configuration for different languages.
+            While these have helped inject values during CI/CD pipeline and greatly simplified configuration management, 
+                the blah.config concept hasn't moved away.
+    3/14 Explore separation of concerns:
+        One of the key reasons we would want to move the configuration away from source control is to outline responsibilities.
+        - Configuration custodian
+        - Configuration consumer
+        - Configuration store
+        - Secret store
+    4/14 Understand external configuration store patterns:
+        These patterns store the configuration information in an external location and provide an interface that can be used to quickly and efficiently read and update configuration settings.
+    5/14 Introduction to Azure App Configuration:
+        Azure App Configuration is a service for central management of application settings and feature flags.
+        Distributed configuration settings can lead to hard-to-troubleshoot deployment errors.  
+            Azure App Configuration service stores all the settings for your application and secures their access in one place.
+        ! App Configuration complements Azure Key Vault, which is used to store application secrets. !
+    6/14 Examine Key-value pairs:
+        Azure App Configuration stores configuration data as key-value pairs.
+        Keys:
+            Keys serve as the name for key-value pairs and are used to store and retrieve corresponding values.
+        Design key namespaces:
+            There are two general approaches to naming keys used for configuration data: flat or hierarchical.
+            These methods are similar from an application usage standpoint, but hierarchical naming offers several advantages:
+                - Easier to read. Instead of one long sequence of characters, delimiters in a hierarchical key name function as spaces in a sentence.
+                - Easier to manage. A key name hierarchy represents logical groups of configuration data.
+                - Easier to use. It's simpler to write a query that pattern-matches keys in a hierarchical structure and retrieves only a portion of configuration data.
+        Label keys:
+            Key values in App Configuration can optionally have a label attribute.
+            ! Labels are used to differentiate key values with the same key. !
+            A key app1 with labels A and B forms two separate keys in an App Configuration store.
+            ! Label provides a convenient way to create variants of a key. A common use of labels is to specify multiple environments for the same key. !
+        Version key values:
+            App Configuration doesn't version key values automatically as they're modified.
+            Use labels as a way to create multiple versions of a key value.
+        Query key values:
+            Each key value is uniquely identified by its key plus a label that can be null.
+        Values:
+            Values assigned to keys are also Unicode strings. 
+            You can use all Unicode characters for values.
+            ! Configuration data stored in an App Configuration store, which includes all keys and values, is encrypted at rest and in transit. !
+            ! App Configuration isn't a replacement solution for Azure Key Vault. Don't store application secrets in it. !
+    7/14 Examine App configuration feature management:
+        Feature management is a modern software development practice that decouples feature release from code deployment 
+            and enables quick changes to feature availability on demand.
+        Feature Flags are discussed in another module, but at this point, 
+            it's worth noting that Azure App Configuration Service can be used to store and manage feature flags.
+        Basic concepts:
+            - Feature flag: A feature flag is a variable with a binary state of on or off. 
+            - Feature manager: A feature manager is an application package that handles the lifecycle of all the feature flags in an application.
+            - Filter: A filter is a rule for evaluating the state of a feature flag.
+                A user group, a device or browser type, a geographic location, and a time window are all examples of what a filter can represent.
+        Feature flag usage in code:
+            You can think of a feature flag as a Boolean state variable used with an if conditional statement in your code:
+            "
+                if (featureFlag) {
+                    // Run the following code.
+                }
+            "
+        Feature flag declaration:
+            Each feature flag has two parts: a name and a list of one or more filters used to evaluate if a feature's state is on (that is when its value is True).
+        Feature flag repository:
+            To use feature flags effectively, you need to externalize all the feature flags used in an application.
+            This approach allows you to change feature flag states without modifying and redeploying the application itself.
+            !
+                Azure App Configuration is designed to be a centralized repository for feature flags.
+                You can use it to define different kinds of feature flags and manipulate their states quickly and confidently.
+                You can then use the App Configuration libraries for various programming language frameworks to easily access these feature flags from your application.
+            !
+    8/14 Integrate Azure Key Vault with Azure Pipelines:
+        Applications contain many secrets, such as:
+            - Connection strings
+            - Passwords
+            - Certificates
+            - Tokens, which, if leaked to unauthorized users, can lead to a severe security breach.
+        Azure Key Vault allows you to manage your organization's secrets and certificates in a centralized repository.
+            The secrets and keys are further protected by Hardware Security Modules (HSMs).
+            It also provides versioning of secrets, full traceability, and efficient permission management with access policies.
+    9/14 Manage secrets, tokens and certificates:
+        Azure Key Vault helps solve the following problems:
+            - Secrets management
+            - Key management
+            - Certificate management
+            - Store secrets backed by hardware security modules
+        Why use Azure Key Vault?:
+            - Centralize application secrets
+            - Securely store secrets and keys
+                Authentication is done via Azure Active Directory. 
+                Authorization may be done via role-based access control (RBAC) or Key Vault access policy.
+                ! RBAC is used when dealing with the management of the vaults, and a key vault access policy is used when attempting to access data stored in a vault. !
+            - Monitor access and use
+                Once you've created a couple of Key Vaults, you'll want to monitor how and when your keys and secrets are accessed.
+                You can do it by enabling logging for Key Vault.
+            - Simplified administration of application secrets
+                When storing valuable data, you must take several steps. 
+                    Security information must be secured. 
+                    It must follow a lifecycle. 
+                    It must be highly available.
+                You can create an Azure Key Vault per application 
+                    and restrict the secrets stored in a Key Vault to a particular application and team of developers.
+            - Integrate with other Azure services
+                As a secure store in Azure, Key Vault has been used to simplify scenarios like Azure Disk Encryption, 
+                    the always encrypted functionality in SQL Server and Azure SQL Database, Azure web apps.
+                Key Vault itself can integrate with storage accounts, Event Hubs, and log analytics.
+    10/14 Examine DevOps inner and outer loop:
+        ! While you can store configuration and secrets together, 
+            it violates our separation of concern principle, so the recommendation is to use a different store for persisting secrets. !
+    11/14 Integrating Azure Key Vault with Azure DevOps:
+        ! LAB !
+        Task 1: (skip if done) Create and configure the team project
+        Task 2: (skip if done) Import eShopOnWeb Git Repository
+        Exercise 1: Setup CI pipeline to build eShopOnWeb container
+            Task 1: (skip if done) Create a Service Principal
+                From the Bash prompt, in the Cloud Shell pane, 
+                    run the following commands to retrieve the values of the Azure subscription ID and subscription name attributes:
+                    "
+                        az account show --query id --output tsv
+                        az account show --query name --output tsv
+                    "
+                And create Service Principal, because we will use SP while using Azure Services. 
+                    "
+                        az ad sp create-for-rbac --name myServicePrincipalName \
+                            --role contributor \
+                            --scopes /subscriptions/mySubscriptionID 
+                    "
+                !!! The command will generate a JSON output. Copy the output to text file. You will need it later in this lab. !!!
+
+            Task 2: Setup and Run CI pipeline
+                In this task, you will import an existing CI YAML pipeline definition, modify and run it.
+                It will create a new Azure Container Registry (ACR) and build/publish the eShopOnWeb container images.
+                
+            Task 2: Create an Azure Key Vault
+                In this task, you will create an Azure Key Vault by using the Azure portal.
+                For this lab scenario, we will have a Azure Container Instance (ACI) that pulls and runs a container image stored in Azure Container Registry (ACR).
+                In here, you need to also define Permissions for Service Principal.
+
+            Task 3: Create a Variable Group connected to Azure Key Vault
+                In this task, you will create a Variable Group in Azure DevOps that will retrieve the 
+                    ACR password secret from Key Vault using the Service Connection (Service Principal).
+                Adding Key-Vault as Variable Group to Pipeline.
+
+            Task 4: Setup CD Pipeline to deploy container in Azure Container Instance (ACI)
+                In this task, you will import a CD pipeline, customize it, 
+                    and run it for deploying the container image created before in a Azure Container Instance.
+    12/14 Enable Dynamic Configuration and Feature Flags:
+        Task 1: (skip if done) Create and configure the team project
+        Task 2: (skip if done) Import eShopOnWeb Git Repository
+        Task 3: (skip if done) Set main branch as default branch
+        Exercise 1: (skip if done) Import and run CI/CD Pipelines
+            In this exercise, you will import and run the CI pipeline, 
+                configure the service connection with your Azure Subscription and then import and run the CD pipeline.
+            
+            Task 1: Import and run the CI pipeline
+            Task 2: Manage the service connection
+                You can create a connection from Azure Pipelines to external and remote services for executing tasks in a job.
+                In this task, you will create a service principal by using the Azure CLI, which will allow Azure DevOps to:
+                    - Deploy resources on your azure subscription
+                    - Deploy the eShopOnWeb application
+                "
+                    subscriptionName=$(az account show --query name --output tsv)
+                    subscriptionId=$(az account show --query id --output tsv)
+                    echo $subscriptionName
+                    echo $subscriptionId
+                "
+                
+                Now, we need to create Service Principal:
+                "
+                    az ad sp create-for-rbac --name sp-az400-azdo --role contributor --scopes /subscriptions/$subscriptionId
+                "
+                !!! Note: The command will generate a JSON output. Copy the output to text file. You will need it later in this lab. !!!
+                Now, go to Project Settings panel in Azure Dev and create Service Connection with Service Principal.
+            Task 3: Import and run the CD pipeline
+        Exercise 2: Manage Azure App Configuration
+            In this exercise, you will create the App Configuration resource in Azure, enable the managed identity and then test the full solution.
+            Task 1: Create the App Configuration resource
+            Task 2: Enable Managed Identity
+            Task 3: Configure the Web App
+            Task 4: Test the Configuration Management
+                
