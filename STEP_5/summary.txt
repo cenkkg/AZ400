@@ -349,4 +349,5 @@ STEP 5.6:
             Task 2: Enable Managed Identity
             Task 3: Configure the Web App
             Task 4: Test the Configuration Management
-                
+    13/14 TEST:
+    14/14 SUMMARY:
