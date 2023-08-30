@@ -131,4 +131,177 @@ STEP 6.2:
         "
         Circular dependencies:
             A circular dependency is a problem with dependency sequencing, resulting in the deployment going around in a loop and unable to continue.
-    
+    5/9 Modularize templates:
+        When using Azure Resource Manager templates, it's best to modularize them by breaking them into individual components.
+        - Linked template:
+            Add a deployment resource to your main template to link one template to another.
+        - Nested template:
+            You can also nest a template within the main template, use the template property, and specify the template syntax.
+        Deployments modes:
+            When deploying your resources using templates, you have three options:
+                - validate
+                - incremental mode (default)
+                - complete mode
+        External template and external parameters:
+            To link to an external template and parameter file, use templateLink and parametersLink.
+        Securing an external template:
+            ! Although the linked template must be available externally, it doesn't need to be made available to the public. !
+    6/9 Manage secrets in templates:
+        When passing a secure value (such as a password) as a parameter during deployment, you can retrieve the value from an Azure Key Vault.
+        Reference a secret with static ID:
+            ! The Key Vault is referenced in the parameter file and not the template. !
+            Firstly, create template file and use 'Parameters':
+                "
+                    "parameters": {
+                        "adminLogin": {
+                        "type": "string"
+                        },
+                        "adminPassword": {
+                        "type": "securestring"
+                        },
+                        "sqlServerName": {
+                        "type": "string"
+                        }
+                    },
+                "
+            Secondly, now, you can create a parameter file for the preceding template.
+                In the parameter file, specify a parameter that matches the parameter's name in the template.
+                For the parameter value, reference the secret from the Key Vault.
+                You reference the secret by passing the resource identifier of the Key Vault and the secret's name.
+                    "
+                        {
+                            "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+                            "contentVersion": "1.0.0.0",
+                            "parameters": {
+                                "adminLogin": {
+                                    "value": "exampleadmin"
+                                },
+                                "adminPassword": {
+                                    "reference": {
+                                    "keyVault": {
+                                        "id": "/subscriptions/<subscription-id>/resourceGroups/examplegroup/providers/Microsoft.KeyVault/vaults/<vault-name>"
+                                    },
+                                    "secretName": "examplesecret"
+                                    }
+                                },
+                                "sqlServerName": {
+                                    "value": "<your-server-name>"
+                                }
+                            }
+                        }
+                    "
+    7/9 Deployments using Azure Bicep templates:
+        Task 1: (skip if done) Create and configure the team project
+        Task 2: (skip if done) Import eShopOnWeb Git Repository
+
+        Exercise 1: Understand an Azure Bicep template and simplify it using a reusable module
+            Task 1: Create Azure Bicep template
+                Bicep file is much more user-friendly than ARM Templates.
+            Task 2: Create a bicep module for storage resources
+                In this task, you will create a storage template module 'storage.bicep' which will create a storage account only and will be imported by the main template.
+                In storage.bicep:
+                    "
+                        @description('Location for all resources.')
+                        param location string = resourceGroup().location
+
+                        @description('Name for the storage account.')
+                        param storageAccountName string
+
+                        resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
+                        name: storageAccountName
+                        location: location
+                        sku: {
+                            name: 'Standard_LRS'
+                        }
+                        kind: 'Storage'
+                        }
+
+                        output storageURI string = storageAccount.properties.primaryEndpoints.blob
+                    "
+            Task 3: Modify the main template to use the template module:
+                In this task, you will modify the main template to reference the template module you created in the previous task.
+                In main template file:
+                    "
+                        module storageModule './storage.bicep' = {
+                        name: 'linkedTemplate'
+                        params: {
+                            location: location
+                            storageAccountName: storageAccountName
+                        }
+                        }
+                    "
+        Exercise 2: Deploying the templates to Azure using YAML pipelines
+            In this lab, you will create a service connection and use it in an Azure DevOps YAML pipeline to deploy your template to your Azure environment.
+            Task 1: (skip if done) Create a Service Connection for deployment
+                In this task, you will create a Service Principal by using the Azure CLI, which will allow Azure DevOps to:
+                    - Deploy resources on your Azure subscription.
+                    - Have read access on the later created Key Vault secrets.
+            Task 2: Deploy resources to Azure by YAML pipelines:
+
+    8/9 TEST:
+    9/9 SUMMARY:
+********************************************************************************************************************************************
+STEP 6.3:
+    1/6 INTRODUCTION:
+        This module explains Azure CLI to create Azure resources, run templates, and detail Azure CLI commands.
+    2/6 What is Azure CLI?:
+        ! Azure CLI is a command-line program you use to connect to Azure and execute administrative commands on Azure resources. !
+        It runs on Linux, macOS, and Windows operating systems.
+        ! In both cases, you can use Azure CLI interactively or through scripts. !
+    3/6 Work with Azure CLI:
+        Azure CLI lets you control nearly every aspect of every Azure resource.
+        1- Connect:
+            Because you're working with a local Azure CLI installation, you'll need to authenticate before you can execute Azure commands.
+            "
+                az login
+            "
+        2- Create:
+            You'll often need to create a new resource group before you create a new Azure service.
+            "
+                az group create --name <name> --location <location>
+            "
+        3- Verify installation:
+            For many Azure resources, Azure CLI provides a list subcommand to get resource details.
+            "
+                az group list
+                az group list --output table
+                az group list --query "[?name == '<rg name>']"
+            "
+        Using Azure CLI in scripts:
+    4/6 Exercise - Run templates using Azure CLI:
+        "
+            az group create --name <resource group name> --location  <your nearest datacenter>
+            
+            curl https://raw.githubusercontent.com/Microsoft/PartsUnlimited/master/Labfiles/AZ-400T05_Implementing_Application_Infrastructure/M01/azuredeploy.json > C:\temp\azuredeploy.json
+
+            az deployment group validate \
+                --resource-group [sandbox resource group name] \
+                --template-file C:\temp\azuredeploy.json \
+                --parameters adminUsername=$USERNAME \
+                --parameters adminPassword=$PASSWORD \
+                --parameters dnsLabelPrefix=$DNS_LABEL_PREFIX
+
+            az deployment group create \
+                --name MyDeployment \
+                --resource-group [sandbox resource group name] \
+                --template-file azuredeploy.json \
+                --parameters adminUsername=$USERNAME \
+                --parameters adminPassword=$PASSWORD \
+                --parameters dnsLabelPrefix=$DNS_LABEL_PREFIX
+
+            IPADDRESS=$(az vm show \
+                --name SimpleWinVM \
+                --resource-group [sandbox resource group name] \
+                --show-details \
+                --query [publicIps] \
+                --output tsv)
+
+            curl $IPADDRESS
+        "
+
+    5/6 TEST:
+    6/6 SUMMARY:
+********************************************************************************************************************************************
+STEP 6.4:
+    1/13 INTRODUCTION:
+        
