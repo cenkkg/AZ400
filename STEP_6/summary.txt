@@ -304,4 +304,276 @@ STEP 6.3:
 ********************************************************************************************************************************************
 STEP 6.4:
     1/13 INTRODUCTION:
-        
+        Azure Automation is an Azure service that provides a way for users to automate 
+            the manual, 
+            long-running, 
+            error-prone, 
+            and frequently repeated tasks commonly done in a cloud and enterprise environment.
+    2/13 Create automation accounts:
+        ! To start using the Microsoft Azure Automation service, you must first create an Automation account from within the Azure portal. !
+        An Automation account gives you access to managing all Azure resources via an API.
+    3/13 What is a runbook?:
+        Runbooks serve as repositories for your custom scripts and workflows.
+        Creating runbooks:
+            When creating runbooks, you have two options. You can either:
+                - Create your runbook and import it.
+                - Modify runbooks from the runbook gallery.
+            ! If you prefer to edit a runbook without being exposed to the underlying code, you can create a graphical runbook using 
+                the Azure portal's graphic editor. !
+        Graphical runbooks:
+            Graphical runbooks and Graphical PowerShell Workflow runbooks are created and edited with the graphic editor in the Azure portal.
+        PowerShell runbooks:
+            PowerShell runbooks are based on Windows PowerShell.
+            You edit the runbook code directly, using the text editor in the Azure portal.
+        PowerShell Workflow runbooks:
+            PowerShell Workflow runbooks are text runbooks based on Windows PowerShell Workflow.
+            Workflow runbooks take longer to start than PowerShell runbooks because they must be compiled before running.
+        Python runbooks:
+            Python runbooks compile under Python 2.
+    4/13 Understand automation shared resources:
+        Azure Automation contains shared resources that are globally available to be associated with or used in a runbook.     
+        As a best practice, always try to create global assets to be used across your runbooks.
+            It will save time and reduce the number of manual edits within individual runbooks.
+    5/13 Explore runbook gallery:
+        Azure Automation runbooks are provided to help eliminate the time it takes to build custom solutions.
+        Choosing items from the runbook gallery:
+    6/13 Examine webhooks:
+        You can automate starting a runbook either by scheduling it or by using a webhook.
+        ! A webhook allows you to start a particular runbook in Azure Automation through a single HTTPS request. !
+        Create a webhook:
+            You can create Webhook for Runbook, by selecting Resources in Runbook pane, and select Workhooks > Add Webhook
+        Using a webhook:
+            To use a webhook after it has been created, your client application must issue an HTTP POST with the URL for the webhook.
+            "
+                  http://< Webhook Server >/token?=< Token Value >
+            "
+    7/13 Explore source control integration:
+        !!! Azure Automation supports source control integration that enables you to keep your runbooks in your Automation account 
+            up to date with your scripts in your GitHub or Azure DevOps source control repository. !!!
+        It makes it easier to promote code you've tested in your development environment to your production Automation account.
+    8/13 Explore PowerShell workflows:
+        IT pros often automate management tasks for their multi-device environments by running sequences of long-running tasks or workflows.
+        Activities:
+            An activity is a specific task that you want a workflow to do.
+    9/13 Create a workflow:
+        Use a script editor such as the Windows PowerShell Integrated Scripting Environment (ISE) to write the workflow.
+        A benefit of using PowerShell ISE is that it automatically compiles your code and allows you to save the artifact.
+        Because the syntactic differences between scripts and workflows are significant, 
+            a tool that knows both workflows and scripts will save you considerable coding and testing time.
+        Syntax:
+            When you create your workflow, begin with the workflow keyword, which identifies a workflow command to PowerShell.
+            "
+                workflow MyFirstRunbook-Workflow
+                {
+                    Param(
+                            [string]$VMName,
+                            [string]$ResourceGroupName
+                        )
+                        ....
+                    Start-AzureRmVM -Name $VMName -ResourceGroupName $ResourceGroupName
+                }
+            "
+    10/13 Exercise - Create and run a workflow runbook:
+        "
+            Workflow MyFirstRunbook-Workflow
+            {
+                Write-Output "Hello World"
+            }
+        "
+        Publish and run the runbook:
+            The runbook that you created is still in draft mode.
+            It would be best if you published it before you can run it in production. 
+            ! When you publish a runbook, you overwrite the existing published version with the draft version. !
+    11/13 Examine checkpoint and parallel processing:
+        Workflows let you implement complex logic within your code. 
+        ! Two features available with workflows are checkpoints and parallel processing. !
+            - Checkpoints:
+                A checkpoint is a snapshot of the current state of the workflow.
+                Checkpoints include the current value for variables and any output generated up to that point.
+                ! You can set a checkpoint in a workflow with the Checkpoint-Workflow activity. !
+            - Parallel processing:
+                A script block has multiple commands that run concurrently (or in parallel) instead of sequentially, as for a typical script.
+                "
+                    Parallel
+                    {
+                        Start-AzureRmVM -Name $vm0 -ResourceGroupName $rg 
+                        Start-AzureRmVM -Name $vm1 -ResourceGroupName $rg
+                    }
+
+                    Start-AzureRmVM -Name $vm2 -ResourceGroupName $rg
+                "
+                "
+                    ForEach -Parallel -ThrottleLimit 10 ($<item> in $<collection>)
+                    {
+                        <Activity1>
+                        <Activity2>
+                    }
+                    <Activity3>
+                "
+
+                A real-world example of it could be similar to the following code: 
+                    a message displays for each file after it's copied. Only after all files are copied does the completion message display.
+                    "
+                        Workflow Copy-Files
+                        {
+                            $files = @("C:\LocalPath\File1.txt","C:\LocalPath\File2.txt","C:\LocalPath\File3.txt")
+                    
+                            ForEach -Parallel -ThrottleLimit 10 ($File in $Files)
+                            {
+                                Copy-Item -Path $File -Destination \\NetworkPath
+                                Write-Output "$File copied."
+                            }
+                    
+                            Write-Output "All files copied."
+                        }
+                    "
+********************************************************************************************************************************************
+STEP 6.5:
+    1/11 INTRODUCTION:
+        This module describes Desired State Configuration (DSC) and its components for implementation.
+    2/11 Understand configuration drift:
+        'Configuration drift' is the process of a set of resources changing over time from their original deployment state.
+        !
+            The more an environment drifts from its original state, the more likely it is for an application to find issues.
+            The greater the degree of configuration drift, the longer it takes to troubleshoot and rectify issues.
+        !
+        Solutions for managing configuration drift:
+            - Windows PowerShell Desired State Configuration
+            - Azure Policy
+    3/11 Explore Desired State Configuration (DSC):
+        Desired State Configuration (DSC) is a configuration management approach that you can use 
+            for configuration, 
+            deployment, 
+            and management 
+                of systems to ensure that an environment is maintained in a state that you specify (defined state) 
+                and doesn't deviate from that state.
+        ! DSC helps eliminate configuration drift and ensures the state is maintained for compliance, security, and performance. !
+        Windows PowerShell DSC is a management platform in PowerShell that provides desired State.
+        ! PowerShell DSC lets you manage, deploy, and enforce configurations for physical or virtual machines, including Windows and Linux. !
+        DSC components:
+            DSC consists of three primary parts:
+                - Configurations
+                - Resources
+                - Local Configuration Manager (LCM)
+            There are two methods of implementing DSC:
+                - Push mode - A user actively applies a configuration to a target node and pushes out the configuration.
+                - Pull mode is where pull clients are automatically configured to get their desired state configurations from a remote pull service.
+                    This remote pull service is provided by a pull server that acts as central control and manager for the configurations, 
+                        ensures that nodes conform to the desired state, and reports on their compliance status.
+    4/11 Explore Azure Automation State configuration (DSC):
+        Azure Automation State configuration DSC is an Azure cloud-based implementation of PowerShell DSC, available as part of Azure Automation.
+        Azure Automation State configuration allows you to write, manage, and compile PowerShell DSC configurations, import DSC Resources, and assign configurations to target nodes, all in the cloud.
+        Why use Azure Automation DSC?:
+            Built-in pull server. Provides a DSC pull server like the Windows Feature DSC service so that target nodes automatically receive configurations, conform to the desired state, and report back on their compliance.
+            Management of all your DSC artifacts. 
+                You can manage all your DSC configurations, resources, and target nodes from the Azure portal or PowerShell.
+            Import reporting data into Log Analytics. 
+                Nodes managed with Azure Automation state configuration send detailed reporting status data to the built-in pull server.
+        How Azure Automation state configuration works:
+            1- Create a PowerShell script with the configuration element.
+            2- Upload the script to Azure Automation and compile the script into a MOF file.
+                The file is transferred to the DSC pull server, provided as part of the Azure Automation service.
+            3- Define the nodes that will use the configuration, and then apply the configuration.
+    5/11 Examine DSC configuration file:
+        DSC configurations are Windows PowerShell scripts that define a special type of function.
+        "
+            configuration LabConfig
+            {
+                Node WebServer
+                {
+                    WindowsFeature IIS
+                    {
+                        Ensure = 'Present'
+                        Name = 'Web-Server'
+                        IncludeAllSubFeature = $true
+                    }
+                }
+            }
+        "
+    6/11 Exercise - Import and compile:
+        After creating your DSC configuration file, you must import it and compile it to the DSC pull server.
+        Compiling will create the MOF file.
+        Import and compile configurations:
+            1- Create a configuration file by creating a file on your local machine. 
+                Then, copy and paste the following PowerShell code into the file, 
+                    and name it LabConfig.ps1. 
+                This script configuration will ensure the IIS web-server role is installed on the servers.
+            2- In Azure Automation, account under Configuration Management > State configuration (DSC), 
+                select the Configurations tab, and select +Add.
+    7/11 Exercise - Onboard machines for management:
+        After your configuration is in place, you'll select the Azure VMs or on-premises VMs that you want to onboard.
+        Onboard VMs to configure:
+            When onboarding VMs using this method, you'll need to deploy your VMs to Azure before starting:
+    8/11 Explore hybrid management:
+        ! The Hybrid Runbook Worker feature of Azure Automation allows you to run runbooks that manage local resources 
+            in your private data center on machines located in your data center. !
+        Hybrid Runbook Worker workflow and characteristics:
+            - You can select one or more computers in your data center to act as a Hybrid Runbook Worker and then run runbooks from Azure Automation.
+            - Each Hybrid Runbook Worker is a member of a Hybrid Runbook Worker group, which you specify when you install the agent.
+            - A group can include a single agent, but you can install multiple agents in a group for high availability.
+            - The agent on the local computer starts all communication with Azure Automation in the cloud.
+    9/11 Implement DSC and Linux Automation on Azure:
+        The following Linux operating system versions are currently supported by both PowerShell DSC and Azure Automation DSC:
+            - CentOS 6, 7, and 8 (x64)
+            - Debian GNU/Linux 8, 9, and 10 (x64)
+            - Oracle Linux 6 and 7 (x64)
+            - ...
+    10/11 TEST:
+    11/11 SUMMARY:
+********************************************************************************************************************************************
+STEP 6.6:
+    1/9 INTRODUCTION:
+        This module explains what Bicep is and how it's integrated into different tools such as 
+            Azure CLI and Visual Studio Code for environment deployment configuration.
+    2/9 What is Bicep?:
+        Azure Bicep is the next revision of ARM templates designed to solve some of the issues developers were facing when deploying their resources to Azure.
+        It's an Open Source tool and, in fact, a domain-specific language (DSL) that provides a means to declaratively codify infrastructure, 
+            which describes the topology of cloud resources 
+                such as VMs, 
+                Web Apps,
+                and networking interfaces.
+        The new syntax allows you to write less code compared to ARM templates, 
+            which are more straightforward and concise and automatically manage the dependency between resources.
+    3/9 Install Bicep:
+        Installing the VS Code extension:
+        Installing Bicep CLI:
+            "az bicep install"
+    4/9 Exercise - Create Bicep templates:
+        It's time to create your first Bicep template.
+        main.bicep:
+            "
+                param storageName string = 'stg${uniqueString(resourceGroup().id)}'
+                param location string = resourceGroup().location
+
+                resource storageaccount 'Microsoft.Storage/storageAccounts@2021-02-01' = {
+                    name: 'name'
+                    location: location
+                    kind: 'StorageV2'
+                    sku: {
+                        name: 'Premium_LRS'
+                    }
+                }
+            "
+        Compile the file:
+            You don't need to compile the file to be able to deploy it, but it's good to know how you can do it.
+            Open the integrated terminal in VS Code by right-clicking on your Bicep file and selecting the Open in Integrated Terminal menu.
+            "az bicep build -f ./main.bicep"
+        Deploying the Bicep file:
+            "
+                az group create --name Bicep --location eastus
+                az deployment group create --resource-group Bicep --template-file main.bicep --parameters storageName=uniqueName
+            "
+    5/9 Understand Bicep file structure and syntax:
+        Azure Bicep comes with its own syntax, however, it's easy to understand and follow.
+    6/9 Exercise - Deploy a Bicep file from Azure Pipelines:
+        Now that you know how to validate, compile and deploy your resources from your local environment, 
+            it's time to extend that and see how to bring that into an Azure Pipeline to streamline your deployment process even further.
+    7/9 Exercise - Deploy a Bicep file from GitHub workflows:
+        Creating a service principal in Azure:
+            To deploy your resources to Azure, you'll need to create a service principal which GitHub can use.
+            "
+                az login
+                az ad sp create-for-rbac --name myApp --role contributor --scopes /subscriptions/{subscription-id}/resourceGroups/Bicep --sdk-auth
+            "
+    8/9 TEST:
+    9/9 SUMMARY:
