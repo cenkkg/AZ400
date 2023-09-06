@@ -1,0 +1,62 @@
+********************************************************************************************************************************************
+STEP 8.1:
+    1/11 INTRODUCTION:
+        This module introduces you to continuous feedback practices and tools to track usage and flow, such as Azure Logs Analytics, Kusto Query Language (KQL), 
+            and Application Insights.
+    2/11 Understand the inner loop:
+    3/11 Introduction to continuous monitoring:
+    4/11 Explore Azure Monitor and Log Analytics:
+    5/11 Examine Kusto Query Language (KQL):
+        Kusto is the primary way to query Log Analytics. 
+        It provides both a query language and a set of control commands.
+    6/11 Explore Application Insights:
+        'Application Insights' is another tool under Azure Monitor to monitor applications/services.
+        You install a small instrumentation package in your application and set up an Application Insights resource in the Microsoft Azure portal.
+        !
+            The instrumentation monitors your app and sends telemetry data to the portal. (The application can run anywhere - it doesn't have to be hosted in Azure.)
+        !
+    7/11 Implement Application Insights:
+        Monitor
+    8/11 Exercise - Add Application Insights to an ASP.NET core application:
+        Application performance management (APM) is a discipline that includes all the tools and activities involved in observing how software and hardware are doing.
+    9/11 Monitoring Application Performance with Application Insights and Azure Load Testing:
+        ! LAB !
+    10/11 TEST:
+    11/11 SUMMARY:
+********************************************************************************************************************************************
+STEP 8.2:
+    1/8 INTRODUCTION:
+    2/8 Explore Azure Dashboards:
+    3/8 Examine view designer in Azure Monitor:
+    4/8 Explore Azure Monitor workbooks:
+    5/8 Explore Power BI:
+    6/8 Build your own custom application:
+        You can access data in log and metric data in Azure Monitor through their API using any REST client.
+        It allows you to build your custom websites and applications.
+    7/8 TEST:
+    8/8 SUMMARY:
+********************************************************************************************************************************************
+STEP 8.3:
+    1/7 INTRODUCTION:
+        This module describes how to share knowledge within teams, Azure DevOps Wikis, and integration with Azure Boards.
+    2/7 Share acquired knowledge within development teams:
+    3/7 Introduction to Azure DevOps project wikis:
+        Azure DevOps Projects includes an option to create a project wiki.
+    4/7 Integrate with Azure Boards:
+        Work item integration functionality allows you to easily create work items in Azure DevOps 
+            with relevant Application Insights data embedded in them.
+    5/7 Sharing Team Knowledge using Azure Project Wikis:
+        ! LAB !
+********************************************************************************************************************************************
+STEP 8.4:
+    1/6 INTRODUCTION:
+        This module helps design process to Application Insights, explores telemetry and monitoring tools and technologies.
+    2/6 Explore rapid responses and augmented search:
+    3/6
+    4/6
+    5/6
+    6/6
+********************************************************************************************************************************************
+STEP 8.5:
+    1/11 INTRODUCTION:
+        
