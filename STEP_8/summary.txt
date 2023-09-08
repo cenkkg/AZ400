@@ -36,7 +36,7 @@ STEP 8.2:
     7/8 TEST:
     8/8 SUMMARY:
 ********************************************************************************************************************************************
-STEP 8.3:
+STEP 8.3:  
     1/7 INTRODUCTION:
         This module describes how to share knowledge within teams, Azure DevOps Wikis, and integration with Azure Boards.
     2/7 Share acquired knowledge within development teams:
@@ -59,4 +59,3 @@ STEP 8.4:
 ********************************************************************************************************************************************
 STEP 8.5:
     1/11 INTRODUCTION:
-        
